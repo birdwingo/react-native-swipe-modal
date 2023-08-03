@@ -14,7 +14,6 @@ const HEIGHT = Dimensions.get( 'window' ).height;
 
 const AnimatedModal = forwardRef<AnimatedModalPublicMethods, AnimatedModalProps>( ( {
   children,
-  visible = false,
   onShow,
   onHide,
   closeOnEmptySpace = true,
@@ -23,9 +22,9 @@ const AnimatedModal = forwardRef<AnimatedModalPublicMethods, AnimatedModalProps>
   closeSpaceVisibility = MAX_VISIBILITY,
 }, ref ) => {
 
-  const [ isVisible, setIsVisible ] = useState( visible );
+  const [ isVisible, setIsVisible ] = useState( false );
 
-  const animation = useSharedValue( visible ? 1 : 0 );
+  const animation = useSharedValue( 0 );
 
   const animatedPressableStyle = useAnimatedStyle( () => (
     { opacity: interpolate( animation.value, [ 0, 1 ], [ 0, closeSpaceVisibility ] ) }

@@ -41,8 +41,8 @@ const getMaxHeight = ( maxHeight: SwipeModalProps['maxHeight'] = HEIGHT, top = 0
 const SwipeModal = forwardRef<SwipeModalPublicMethods, SwipeModalProps>( ( {
   children,
   bg = 'black',
-  showBar,
-  barColor,
+  showBar = true,
+  barColor = 'grey',
   maxHeight = 'max',
   fixedHeight = false,
   defaultHeight,

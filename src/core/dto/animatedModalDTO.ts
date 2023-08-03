@@ -1,8 +1,7 @@
 import { ReactNode } from 'react';
 
 export interface AnimatedModalProps {
-  children: ReactNode;
-  visible?: boolean;
+  children: ReactNode | ReactNode[];
   onShow?: () => void;
   onHide?: () => void;
   closeOnEmptySpace?: boolean;
