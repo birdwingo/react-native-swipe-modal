@@ -40,4 +40,3 @@ jobs:
         with:
           tag_name: "v${{ steps.get_version.outputs.version }}"
           release_name: "v${{ steps.get_version.outputs.version }}"
-          body: ${{ steps.get_changelog.outputs.changelog }}
