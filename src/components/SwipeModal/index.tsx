@@ -15,6 +15,7 @@ import { SwipeModalProps, SwipeModalPublicMethods } from '../../core/dto/swipeMo
 import { AnimatedModalPublicMethods } from '../../core/dto/animatedModalDTO';
 import { useGesture } from '../../core/hooks';
 import { MIN_HEIGHT } from '../../core/constants/data';
+import SwipeModalStyles from './SwipeModal.styles';
 
 const HEIGHT = Dimensions.get( 'window' ).height;
 
@@ -189,6 +190,11 @@ const SwipeModal = forwardRef<SwipeModalPublicMethods, SwipeModalProps>( ( {
       >
         <GestureDetector gesture={gesture}>
           <View onLayout={onLayout}>
+            {showBar && (
+              <View style={SwipeModalStyles.barContainer}>
+                <View style={[ SwipeModalStyles.bar, { backgroundColor: barColor } ]} />
+              </View>
+            )}
             {headerComponent}
             {scrollEnabled ? (
               <ModalScrollView
