@@ -56,6 +56,9 @@
     "standard-version": "^9.5.0",
     "typescript": "^5.1.6"
   },
+  "dependencies": {
+    "react-native-safe-area-context": "^4.7.1"
+  },
   "jest": {
     "preset": "react-native",
     "moduleFileExtensions": [
