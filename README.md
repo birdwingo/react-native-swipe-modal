@@ -78,6 +78,18 @@ export default YourComponent;
 
 - `footerComponent` (optional): A custom component to be displayed at the bottom of the modal. It's placed under scroll content
 
+- `onShow` (optional): A callback function that will be triggered when the modal is shown.
+
+- `onHide` (optional): A callback function that will be triggered when the modal is hidden.
+
+- `closeOnEmptySpace` (optional, default: `true`): Set to `true` to close the modal when the user taps outside the modal's content.
+
+- `closeOnPressBack` (optional, default: `true`): Set to `true` to close the modal when the user presses the back button (Android only).
+
+- `animationDuration` (optional, default: `300`): The duration of the modal's opening and closing animations, in milliseconds.
+
+- `closeSpaceVisibility` (optional, default: `0.6`): A number between 0 and 1, representing the opacity of empty space, that will close the modal if `closeOnEmptySpace` is enabled.
+
 ### Public Methods
 
 - `show()`: Call this method to show the modal.
