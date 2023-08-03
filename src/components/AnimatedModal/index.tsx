@@ -14,7 +14,7 @@ const HEIGHT = Dimensions.get( 'window' ).height;
 
 const AnimatedModal = forwardRef<AnimatedModalPublicMethods, AnimatedModalProps>( ( {
   children,
-  visible,
+  visible = false,
   onShow,
   onHide,
   closeOnEmptySpace = true,
