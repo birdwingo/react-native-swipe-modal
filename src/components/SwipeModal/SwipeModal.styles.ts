@@ -21,4 +21,7 @@ export default StyleSheet.create( {
     height: 5,
     borderRadius: 10,
   },
+  flex: {
+    flex: 1,
+  },
 } );

@@ -1,5 +1,5 @@
 import React, {
-  forwardRef, useRef, memo, useImperativeHandle, useCallback, useMemo,
+  forwardRef, useRef, memo, useImperativeHandle, useCallback, useEffect,
 } from 'react';
 import {
   View, Dimensions, LayoutChangeEvent, Platform, StatusBar,
@@ -73,27 +73,29 @@ const SwipeModal = forwardRef<SwipeModalPublicMethods, SwipeModalProps>( ( {
   const height = useSharedValue( defaultHeight || maxHeightValue.value );
   const start = useSharedValue( height.value );
   const isScrollEnabled = useSharedValue( height.value === maxHeightValue.value );
+  const canResize = useSharedValue( true );
 
-  const animatedStyle = useAnimatedStyle( () => ( { height: maxHeight === 'auto' && !maxHeightValue.value ? '100%' : height.value } ), [] );
+  const animatedStyle = useAnimatedStyle( () => ( ( maxHeight === 'auto' && !maxHeightValue.value ) || !height.value ? {} : { height: height.value } ), [ height.value ] );
+
+  const onHeightChange = useCallback( ( value = maxHeight ) => {
+
+    const newHeight = getMaxHeight( value, marginTop );
+    height.value = defaultHeight || newHeight;
+    start.value = defaultHeight || newHeight;
+    maxHeightValue.value = newHeight;
+    isScrollEnabled.value = true;
+
+  }, [ maxHeight ] );
 
   const show = useCallback( () => {
 
-    const newHeight = getMaxHeight( maxHeight, marginTop );
-    height.value = newHeight;
-    start.value = newHeight;
-    maxHeightValue.value = newHeight;
-    isScrollEnabled.value = true;
+    canResize.value = true;
+    onHeightChange();
     modalRef.current?.show();
 
-  }, [ modalRef ] );
+  }, [ maxHeight ] );
 
-  const hide = () => {
-
-    'worklet';
-
-    runOnJS( modalRef.current?.hide! )();
-
-  };
+  const hide = useCallback( () => modalRef.current?.hide(), [] );
 
   const onGestureEnd = () => {
 
@@ -103,7 +105,7 @@ const SwipeModal = forwardRef<SwipeModalPublicMethods, SwipeModalProps>( ( {
       || ( closeTrigger === 'minHeight' && height.value < closeTriggerValue )
       || height.value < MIN_HEIGHT ) {
 
-      hide();
+      runOnJS( hide )();
 
     } else {
 
@@ -125,6 +127,8 @@ const SwipeModal = forwardRef<SwipeModalPublicMethods, SwipeModalProps>( ( {
 
     }
 
+    canResize.value = true;
+
   };
 
   const onGestureEvent = () => {
@@ -136,6 +140,8 @@ const SwipeModal = forwardRef<SwipeModalPublicMethods, SwipeModalProps>( ( {
       onGestureEnd();
 
     } else {
+
+      canResize.value = false;
 
       const { translationY } = event.value;
 
@@ -159,7 +165,7 @@ const SwipeModal = forwardRef<SwipeModalPublicMethods, SwipeModalProps>( ( {
 
     'worklet';
 
-    if ( !scrollEnabled || ( !isScrollHandled.value && !isScrollEnabled.value ) ) {
+    if ( !scrollEnabled || !isScrollHandled.value || !isScrollEnabled.value ) {
 
       onGestureEvent();
 
@@ -169,32 +175,26 @@ const SwipeModal = forwardRef<SwipeModalPublicMethods, SwipeModalProps>( ( {
       isScrollEnabled.value = false;
       onGestureEvent();
 
-    } else if ( !isScrollHandled.value && isScrollEnabled.value ) {
-
-      isScrollEnabled.value = false;
-
     }
 
   };
 
   const onLayout = useCallback( ( e: LayoutChangeEvent ) => {
 
-    if ( maxHeight === 'auto' && !maxHeightValue.value && !disableSwipe ) {
+    if ( maxHeight === 'auto' && canResize.value && !disableSwipe ) {
 
-      const newHeight = getMaxHeight( e.nativeEvent.layout.height, marginTop );
-      maxHeightValue.value = newHeight;
-      height.value = newHeight;
-      start.value = newHeight;
+      onHeightChange( e.nativeEvent.layout.height );
 
     }
 
-  }, [] );
+  }, [ maxHeight ] );
 
-  useImperativeHandle( ref, () => ( { show, hide } ), [] );
+  useImperativeHandle( ref, () => ( { show, hide } ), [ maxHeight ] );
   useAnimatedReaction( () => event.value, onEvent, [ event.value ] );
+  useEffect( () => onHeightChange(), [ maxHeight ] );
 
-  const modalChildren = useMemo( () => (
-    <View onLayout={onLayout}>
+  const modalChildren = (
+    <View onLayout={onLayout} style={maxHeight !== 'auto' && SwipeModalStyles.flex}>
       {showBar && (
         <View style={SwipeModalStyles.barContainer}>
           <View style={[ SwipeModalStyles.bar, { backgroundColor: barColor } ]} />
@@ -215,12 +215,16 @@ const SwipeModal = forwardRef<SwipeModalPublicMethods, SwipeModalProps>( ( {
       ) : children}
       {footerComponent}
     </View>
-  ), [] );
+  );
 
   return (
     <AnimatedModal ref={modalRef} {...props}>
       <Animated.View
-        style={[ animatedStyle, { paddingBottom: bottom, backgroundColor: bg }, style ]}
+        style={[
+          style,
+          !disableSwipe && animatedStyle,
+          { paddingBottom: bottom, backgroundColor: bg },
+        ]}
       >
         {disableSwipe
           ? modalChildren

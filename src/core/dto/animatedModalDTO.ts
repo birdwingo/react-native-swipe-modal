@@ -8,7 +8,6 @@ export interface AnimatedModalProps {
   closeOnPressBack?: boolean;
   animationDuration?: number;
   closeSpaceVisibility?: number;
-  flexKeyboardView?: boolean;
 }
 
 export type AnimatedModalPublicMethods = {
