@@ -1,4 +1,6 @@
-import { Dimensions, Pressable, BackHandler } from 'react-native';
+import {
+  Dimensions, Pressable, BackHandler, KeyboardAvoidingView, Platform,
+} from 'react-native';
 import React, {
   forwardRef, memo, useState, useImperativeHandle, useCallback, useEffect,
 } from 'react';
@@ -20,6 +22,7 @@ const AnimatedModal = forwardRef<AnimatedModalPublicMethods, AnimatedModalProps>
   closeOnPressBack = true,
   animationDuration = ANIMATION_DURATION,
   closeSpaceVisibility = MAX_VISIBILITY,
+  flexKeyboardView = false,
 }, ref ) => {
 
   const [ isVisible, setIsVisible ] = useState( false );
@@ -103,7 +106,9 @@ const AnimatedModal = forwardRef<AnimatedModalPublicMethods, AnimatedModalProps>
         style={[ animatedStyle, AnimatedModalStyles.modal ]}
         pointerEvents="box-none"
       >
-        {children}
+        <KeyboardAvoidingView style={{ flex: flexKeyboardView ? 1 : undefined }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+          {children}
+        </KeyboardAvoidingView>
       </Animated.View>
     </Animated.View>
   );

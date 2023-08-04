@@ -1,5 +1,5 @@
 import React, {
-  forwardRef, useRef, memo, useImperativeHandle, useCallback,
+  forwardRef, useRef, memo, useImperativeHandle, useCallback, useMemo,
 } from 'react';
 import {
   View, Dimensions, LayoutChangeEvent, Platform, StatusBar,
@@ -55,6 +55,7 @@ const SwipeModal = forwardRef<SwipeModalPublicMethods, SwipeModalProps>( ( {
   scrollContainerProps,
   headerComponent,
   footerComponent,
+  disableSwipe = false,
   ...props
 }, ref ) => {
 
@@ -77,8 +78,10 @@ const SwipeModal = forwardRef<SwipeModalPublicMethods, SwipeModalProps>( ( {
 
   const show = useCallback( () => {
 
-    height.value = maxHeightValue.value;
-    start.value = maxHeightValue.value;
+    const newHeight = getMaxHeight( maxHeight, marginTop );
+    height.value = newHeight;
+    start.value = newHeight;
+    maxHeightValue.value = newHeight;
     isScrollEnabled.value = true;
     modalRef.current?.show();
 
@@ -166,15 +169,22 @@ const SwipeModal = forwardRef<SwipeModalPublicMethods, SwipeModalProps>( ( {
       isScrollEnabled.value = false;
       onGestureEvent();
 
+    } else if ( !isScrollHandled.value && isScrollEnabled.value ) {
+
+      isScrollEnabled.value = false;
+
     }
 
   };
 
   const onLayout = useCallback( ( e: LayoutChangeEvent ) => {
 
-    if ( maxHeight === 'auto' && !event.value ) {
+    if ( maxHeight === 'auto' && !maxHeightValue.value && !disableSwipe ) {
 
-      maxHeightValue.value = getMaxHeight( e.nativeEvent.layout.height, marginTop );
+      const newHeight = getMaxHeight( e.nativeEvent.layout.height, marginTop );
+      maxHeightValue.value = newHeight;
+      height.value = newHeight;
+      start.value = newHeight;
 
     }
 
@@ -183,34 +193,38 @@ const SwipeModal = forwardRef<SwipeModalPublicMethods, SwipeModalProps>( ( {
   useImperativeHandle( ref, () => ( { show, hide } ), [] );
   useAnimatedReaction( () => event.value, onEvent, [ event.value ] );
 
+  const modalChildren = useMemo( () => (
+    <View onLayout={onLayout}>
+      {showBar && (
+        <View style={SwipeModalStyles.barContainer}>
+          <View style={[ SwipeModalStyles.bar, { backgroundColor: barColor } ]} />
+        </View>
+      )}
+      {headerComponent}
+      {scrollEnabled ? (
+        <ModalScrollView
+          scrollRef={scrollRef}
+          style={scrollContainerStyle}
+          props={scrollContainerProps}
+          scrollEnabled={isScrollEnabled}
+          scrollY={scrollY}
+          isScrollHandled={isScrollHandled}
+        >
+          {children}
+        </ModalScrollView>
+      ) : children}
+      {footerComponent}
+    </View>
+  ), [] );
+
   return (
     <AnimatedModal ref={modalRef} {...props}>
       <Animated.View
         style={[ animatedStyle, { paddingBottom: bottom, backgroundColor: bg }, style ]}
       >
-        <GestureDetector gesture={gesture}>
-          <View onLayout={onLayout}>
-            {showBar && (
-              <View style={SwipeModalStyles.barContainer}>
-                <View style={[ SwipeModalStyles.bar, { backgroundColor: barColor } ]} />
-              </View>
-            )}
-            {headerComponent}
-            {scrollEnabled ? (
-              <ModalScrollView
-                scrollRef={scrollRef}
-                style={scrollContainerStyle}
-                props={scrollContainerProps}
-                scrollEnabled={isScrollEnabled}
-                scrollY={scrollY}
-                isScrollHandled={isScrollHandled}
-              >
-                {children}
-              </ModalScrollView>
-            ) : children}
-            {footerComponent}
-          </View>
-        </GestureDetector>
+        {disableSwipe
+          ? modalChildren
+          : <GestureDetector gesture={gesture}>{modalChildren}</GestureDetector>}
       </Animated.View>
     </AnimatedModal>
   );
