@@ -12,11 +12,11 @@ export interface SwipeModalProps extends AnimatedModalProps {
   maxHeight?: 'max' | 'auto' | number;
   defaultHeight?: number;
   fixedHeight?: boolean;
-  style?: ViewStyle;
+  style?: ViewStyle | ViewStyle[];
   closeTrigger?: 'swipeDown' | 'minHeight';
   closeTriggerValue?: number;
   scrollEnabled?: boolean;
-  scrollContainerStyle?: ViewStyle;
+  scrollContainerStyle?: ViewStyle | ViewStyle[];
   scrollContainerProps?: ScrollView['props'];
   headerComponent?: ReactNode;
   footerComponent?: ReactNode;
@@ -31,7 +31,7 @@ export type SwipeModalPublicMethods = {
 export interface ModalScrollContainerProps {
   children: ReactNode;
   scrollRef: React.RefObject<ScrollView>;
-  style?: ViewStyle;
+  style?: SwipeModalProps['scrollContainerStyle'];
   props?: SwipeModalProps['scrollContainerProps'];
   scrollY: SharedValue<number>;
   isScrollHandled: SharedValue<boolean>;

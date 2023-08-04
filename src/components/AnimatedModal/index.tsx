@@ -1,5 +1,5 @@
 import {
-  Dimensions, Pressable, BackHandler, KeyboardAvoidingView, Platform,
+  Dimensions, Pressable, BackHandler, KeyboardAvoidingView,
 } from 'react-native';
 import React, {
   forwardRef, memo, useState, useImperativeHandle, useCallback, useEffect,
@@ -22,7 +22,6 @@ const AnimatedModal = forwardRef<AnimatedModalPublicMethods, AnimatedModalProps>
   closeOnPressBack = true,
   animationDuration = ANIMATION_DURATION,
   closeSpaceVisibility = MAX_VISIBILITY,
-  flexKeyboardView = false,
 }, ref ) => {
 
   const [ isVisible, setIsVisible ] = useState( false );
@@ -95,20 +94,15 @@ const AnimatedModal = forwardRef<AnimatedModalPublicMethods, AnimatedModalProps>
   }
 
   return (
-    <Animated.View style={[ AnimatedModalStyles.container ]} pointerEvents="box-none">
+    <Animated.View style={AnimatedModalStyles.container} pointerEvents="box-none">
       {closeOnEmptySpace && (
         <AnimatedPressable
           onPress={hide}
           style={[ AnimatedModalStyles.pressable, animatedPressableStyle ]}
         />
       )}
-      <Animated.View
-        style={[ animatedStyle, AnimatedModalStyles.modal ]}
-        pointerEvents="box-none"
-      >
-        <KeyboardAvoidingView style={{ flex: flexKeyboardView ? 1 : undefined }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-          {children}
-        </KeyboardAvoidingView>
+      <Animated.View style={[ animatedStyle, AnimatedModalStyles.modal ]} pointerEvents="box-none">
+        <KeyboardAvoidingView style={AnimatedModalStyles.flex}>{children}</KeyboardAvoidingView>
       </Animated.View>
     </Animated.View>
   );

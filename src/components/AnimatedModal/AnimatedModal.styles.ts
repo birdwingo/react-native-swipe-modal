@@ -6,7 +6,7 @@ export default StyleSheet.create( {
     width: '100%',
     height: '100%',
     bottom: 0,
-    zIndex: 20,
+    zIndex: 50,
   },
   modal: {
     position: 'absolute',
@@ -19,5 +19,9 @@ export default StyleSheet.create( {
     flex: 1,
     width: '100%',
     backgroundColor: '#000000',
+  },
+  flex: {
+    flex: 1,
+    justifyContent: 'flex-end',
   },
 } );
