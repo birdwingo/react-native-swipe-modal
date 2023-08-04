@@ -12,11 +12,7 @@ npm install react-native-gesture-handler
 npm install @birdwingo/react-native-swipe-modal
 ```
 
-**This library provides two modal components. One is AnimatedModal that will animated content when shown. The other is SwipeModal that allows you move with modal**
-
-## SwipeModal
-
-### Usage
+## Usage
 
 To use the `SwipeModal` component, you need to import it in your React Native application and include it in your JSX code. Here's an example of how to use it:
 
@@ -46,7 +42,7 @@ const YourComponent = () => {
 export default YourComponent;
 ```
 
-### Props
+## Props
 
 - `children` (required): The content to be rendered inside the modal.
 
@@ -56,15 +52,15 @@ export default YourComponent;
 
 - `barColor` (optional, default: `'white'`): The color of the bar at the top of the modal.
 
-- `maxHeight` (optional, default: `'max'`): The maximum height of the modal. It can be set to `'max'`, `'auto'`, or a specific number. If `auto` maxHeight of modal will the height modal children need.
+- `maxHeight` (optional, default: `'max'`): The maximum height of the modal. It can be set to `'max'`, `'auto'`, or a specific number. If `'auto'` maxHeight of modal will the height modal children need.
 
-- `defaultHeight` (optional, default: `maxHeight`): The default height of the modal.
+- `defaultHeight` (optional, default: `'maxHeight'`): The default height of the modal.
 
 - `fixedHeight` (optional, default: `false`): Set to `true` if you want to maintain a fixed height for the modal. It means that the height of the modal will get back to the initial position after swipe, if modal was not closed.
 
 - `style` (optional): Additional styles to be applied to the modal.
 
-- `closeTrigger` (optional, default: `'swipeDown'`): The trigger to close the modal. It can be set to `'swipeDown'` or `'minHeight'`. `swipeDown` means that modal will close when modal was swiped down by `'closeTriggerValue'`. `'minHeight'` means that modal will close when height of modal is less than `closeTriggerValue`.
+- `closeTrigger` (optional, default: `'swipeDown'`): The trigger to close the modal. It can be set to `'swipeDown'` or `'minHeight'`. `'swipeDown'` means that modal will close when modal was swiped down by `closeTriggerValue`. `'minHeight'` means that modal will close when height of modal is less than `closeTriggerValue`.
 
 - `closeTriggerValue` (optional, default: `10`): The value that triggers the modal to close when using the `closeTrigger`.
 
@@ -78,58 +74,7 @@ export default YourComponent;
 
 - `footerComponent` (optional): A custom component to be displayed at the bottom of the modal. It's placed under scroll content
 
-- `onShow` (optional): A callback function that will be triggered when the modal is shown.
-
-- `onHide` (optional): A callback function that will be triggered when the modal is hidden.
-
-- `closeOnEmptySpace` (optional, default: `true`): Set to `true` to close the modal when the user taps outside the modal's content.
-
-- `closeOnPressBack` (optional, default: `true`): Set to `true` to close the modal when the user presses the back button (Android only).
-
-- `animationDuration` (optional, default: `300`): The duration of the modal's opening and closing animations, in milliseconds.
-
-- `closeSpaceVisibility` (optional, default: `0.6`): A number between 0 and 1, representing the opacity of empty space, that will close the modal if `closeOnEmptySpace` is enabled.
-
-### Public Methods
-
-- `show()`: Call this method to show the modal.
-- `hide()`: Call this method to hide the modal.
-
-## AnimatedModal
-
-### Usage
-
-To use the `AnimatedModal` component, you need to import it in your React Native application and include it in your JSX code. Here's an example of how to use it:
-
-```jsx
-import React, { useRef } from 'react';
-import { View, Text } from 'react-native';
-import AnimatedModal, { AnimatedModalPublicMethods } from '@birdwingo/react-native-swipe-modal';
-
-
-const YourComponent = () => {
-
-  const modalRef = useRef<AnimatedModalPublicMethods>(null);
-
-  const showModal = () => modalRef.current?.show(); // Call this function to show modal
-  const hideModal = () => modalRef.current?.hide(); // Call this function to hide modal
-
-  return (
-    <AnimatedModal ref={modalRef}>
-      <View>
-        <Text>Animated Modal</Text>
-      </View>
-    </AnimatedModal>
-  );
-
-};
-
-export default YourComponent;
-```
-
-### Props
-
-- `children` (required): The content to be rendered inside the modal.
+- `disableSwipe` (optional, default: `false`): Set to `true` if you don't want allow gesture.
 
 - `onShow` (optional): A callback function that will be triggered when the modal is shown.
 
@@ -143,7 +88,7 @@ export default YourComponent;
 
 - `closeSpaceVisibility` (optional, default: `0.6`): A number between 0 and 1, representing the opacity of empty space, that will close the modal if `closeOnEmptySpace` is enabled.
 
-### Public Methods
+## Public Methods
 
 - `show()`: Call this method to show the modal.
 - `hide()`: Call this method to hide the modal.
