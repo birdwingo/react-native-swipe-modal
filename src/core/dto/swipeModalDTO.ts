@@ -20,6 +20,7 @@ export interface SwipeModalProps extends AnimatedModalProps {
   scrollContainerProps?: ScrollView['props'];
   headerComponent?: ReactNode;
   footerComponent?: ReactNode;
+  disableSwipe?: boolean;
 }
 
 export type SwipeModalPublicMethods = {
