@@ -165,12 +165,12 @@ const SwipeModal = forwardRef<SwipeModalPublicMethods, SwipeModalProps>( ( {
 
     'worklet';
 
-    if ( !scrollEnabled || !isScrollEnabled.value
-      || ( !canResize.value && !isScrollHandled.value ) ) {
+    if ( ( !scrollEnabled || !isScrollEnabled.value || !isScrollHandled.value )
+      && scrollY.value <= 0 ) {
 
       onGestureEvent();
 
-    } else if ( event.value?.velocityY! > 0 && scrollY.value === 0 && isScrollHandled.value ) {
+    } else if ( event.value?.velocityY! > 0 && scrollY.value <= 0 ) {
 
       isScrollHandled.value = false;
       isScrollEnabled.value = false;
@@ -218,6 +218,18 @@ const SwipeModal = forwardRef<SwipeModalPublicMethods, SwipeModalProps>( ( {
     </View>
   );
 
+  if ( disableSwipe ) {
+
+    return (
+      <AnimatedModal ref={modalRef} {...props}>
+        <View style={[ style, { paddingBottom: bottom, backgroundColor: bg } ]}>
+          {modalChildren}
+        </View>
+      </AnimatedModal>
+    );
+
+  }
+
   return (
     <AnimatedModal ref={modalRef} {...props}>
       <Animated.View
@@ -227,9 +239,7 @@ const SwipeModal = forwardRef<SwipeModalPublicMethods, SwipeModalProps>( ( {
           { paddingBottom: bottom, backgroundColor: bg },
         ]}
       >
-        {disableSwipe
-          ? modalChildren
-          : <GestureDetector gesture={gesture}>{modalChildren}</GestureDetector>}
+        <GestureDetector gesture={gesture}>{modalChildren}</GestureDetector>
       </Animated.View>
     </AnimatedModal>
   );
