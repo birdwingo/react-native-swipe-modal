@@ -27,6 +27,7 @@ const AnimatedModal = forwardRef<AnimatedModalPublicMethods, AnimatedModalProps>
   const [ isVisible, setIsVisible ] = useState( false );
 
   const animation = useSharedValue( 0 );
+  const mounted = useSharedValue( false );
 
   const animatedPressableStyle = useAnimatedStyle( () => (
     { opacity: interpolate( animation.value, [ 0, 1 ], [ 0, closeSpaceVisibility ] ) }
@@ -77,15 +78,17 @@ const AnimatedModal = forwardRef<AnimatedModalPublicMethods, AnimatedModalProps>
 
       }
 
-    } else {
+    } else if ( mounted.value ) {
 
       onHide?.();
 
     }
 
+    mounted.value = true;
+
     return () => {};
 
-  }, [ isVisible, closeOnPressBack ] );
+  }, [ isVisible ] );
 
   if ( !isVisible ) {
 
@@ -102,7 +105,7 @@ const AnimatedModal = forwardRef<AnimatedModalPublicMethods, AnimatedModalProps>
         />
       )}
       <Animated.View style={[ animatedStyle, AnimatedModalStyles.modal ]} pointerEvents="box-none">
-        <KeyboardAvoidingView style={AnimatedModalStyles.flex}>{children}</KeyboardAvoidingView>
+        <KeyboardAvoidingView style={AnimatedModalStyles.flex} pointerEvents="box-none">{children}</KeyboardAvoidingView>
       </Animated.View>
     </Animated.View>
   );
