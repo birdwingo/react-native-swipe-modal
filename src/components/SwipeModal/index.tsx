@@ -165,7 +165,8 @@ const SwipeModal = forwardRef<SwipeModalPublicMethods, SwipeModalProps>( ( {
 
     'worklet';
 
-    if ( !scrollEnabled || !isScrollHandled.value || !isScrollEnabled.value ) {
+    if ( !scrollEnabled || !isScrollEnabled.value
+      || ( !canResize.value && !isScrollHandled.value ) ) {
 
       onGestureEvent();
 
