@@ -1,4 +1,4 @@
-# @birdwingo/react-native-reanimated-graph
+# @birdwingo/react-native-swipe-modal
 
 ## About
 
