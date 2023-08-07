@@ -88,6 +88,8 @@ export default YourComponent;
 
 - `closeSpaceVisibility` (optional, default: `0.6`): A number between 0 and 1, representing the opacity of empty space, that will close the modal if `closeOnEmptySpace` is enabled.
 
+- `topOffset` (optional, default: `0`): Determines the amount of space that the swipeable content will be offset from the top edge of window.
+
 ## Public Methods
 
 - `show()`: Call this method to show the modal.

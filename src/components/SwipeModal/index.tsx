@@ -1,14 +1,11 @@
 import React, {
   forwardRef, useRef, memo, useImperativeHandle, useCallback, useEffect,
 } from 'react';
-import {
-  View, Dimensions, LayoutChangeEvent, Platform, StatusBar,
-} from 'react-native';
+import { View, Dimensions, LayoutChangeEvent } from 'react-native';
 import Animated, {
   useSharedValue, useAnimatedStyle, useAnimatedReaction, runOnJS, withTiming,
 } from 'react-native-reanimated';
 import { GestureDetector, ScrollView } from 'react-native-gesture-handler';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AnimatedModal from '../AnimatedModal';
 import ModalScrollView from './scroll';
 import { SwipeModalProps, SwipeModalPublicMethods } from '../../core/dto/swipeModalDTO';
@@ -56,6 +53,7 @@ const SwipeModal = forwardRef<SwipeModalPublicMethods, SwipeModalProps>( ( {
   headerComponent,
   footerComponent,
   disableSwipe = false,
+  topOffset = 0,
   ...props
 }, ref ) => {
 
@@ -63,13 +61,10 @@ const SwipeModal = forwardRef<SwipeModalPublicMethods, SwipeModalProps>( ( {
   const scrollRef = useRef<ScrollView>( null );
 
   const { gesture, event } = useGesture( scrollRef );
-  const { top, bottom } = useSafeAreaInsets();
-
-  const marginTop = ( Platform.OS === 'ios' ? top : StatusBar.currentHeight ) || 0;
 
   const scrollY = useSharedValue( 0 );
   const isScrollHandled = useSharedValue( false );
-  const maxHeightValue = useSharedValue( getMaxHeight( maxHeight, marginTop ) );
+  const maxHeightValue = useSharedValue( getMaxHeight( maxHeight, topOffset ) );
   const height = useSharedValue( defaultHeight || maxHeightValue.value );
   const start = useSharedValue( height.value );
   const isScrollEnabled = useSharedValue( height.value === maxHeightValue.value );
@@ -79,7 +74,7 @@ const SwipeModal = forwardRef<SwipeModalPublicMethods, SwipeModalProps>( ( {
 
   const onHeightChange = useCallback( ( value = maxHeight ) => {
 
-    const newHeight = getMaxHeight( value, marginTop );
+    const newHeight = getMaxHeight( value, topOffset );
     height.value = defaultHeight || newHeight;
     start.value = defaultHeight || newHeight;
     maxHeightValue.value = newHeight;
@@ -222,7 +217,7 @@ const SwipeModal = forwardRef<SwipeModalPublicMethods, SwipeModalProps>( ( {
 
     return (
       <AnimatedModal ref={modalRef} {...props}>
-        <View style={[ style, { paddingBottom: bottom, backgroundColor: bg } ]}>
+        <View style={[ style, { backgroundColor: bg } ]}>
           {modalChildren}
         </View>
       </AnimatedModal>
@@ -232,13 +227,7 @@ const SwipeModal = forwardRef<SwipeModalPublicMethods, SwipeModalProps>( ( {
 
   return (
     <AnimatedModal ref={modalRef} {...props}>
-      <Animated.View
-        style={[
-          style,
-          !disableSwipe && animatedStyle,
-          { paddingBottom: bottom, backgroundColor: bg },
-        ]}
-      >
+      <Animated.View style={[ style, !disableSwipe && animatedStyle, { backgroundColor: bg } ]}>
         <GestureDetector gesture={gesture}>{modalChildren}</GestureDetector>
       </Animated.View>
     </AnimatedModal>
