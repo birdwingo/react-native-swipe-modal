@@ -4,6 +4,11 @@
 
 `react-native-swipe-modal` is a customizable and animated modal component that can be used in React Native applications. It provides a smooth swipe-to-close functionality along with various configuration options to suit different use cases. It is used in the [Birdwingo mobile app](https://www.birdwingo.com) to show different kinds of popups and explanations.
 
+<div style="flex-direction:row;">
+  <img src="./src/assets/images/demo.gif" width="300">
+  <img src="./src/assets/images/demo2.gif" width="300">
+</div>
+
 ## Installation
 
 ```bash
