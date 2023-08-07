@@ -21,6 +21,7 @@ export interface SwipeModalProps extends AnimatedModalProps {
   headerComponent?: ReactNode;
   footerComponent?: ReactNode;
   disableSwipe?: boolean;
+  topOffset?: number;
 }
 
 export type SwipeModalPublicMethods = {
