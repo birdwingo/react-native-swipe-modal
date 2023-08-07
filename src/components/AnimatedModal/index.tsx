@@ -27,7 +27,7 @@ const AnimatedModal = forwardRef<AnimatedModalPublicMethods, AnimatedModalProps>
   const [ isVisible, setIsVisible ] = useState( false );
 
   const animation = useSharedValue( 0 );
-  const mounted = useSharedValue( false );
+  const opened = useSharedValue( false );
 
   const animatedPressableStyle = useAnimatedStyle( () => (
     { opacity: interpolate( animation.value, [ 0, 1 ], [ 0, closeSpaceVisibility ] ) }
@@ -58,6 +58,7 @@ const AnimatedModal = forwardRef<AnimatedModalPublicMethods, AnimatedModalProps>
 
     if ( isVisible ) {
 
+      opened.value = true;
       animation.value = withTiming(
         1,
         { duration: animationDuration },
@@ -78,13 +79,12 @@ const AnimatedModal = forwardRef<AnimatedModalPublicMethods, AnimatedModalProps>
 
       }
 
-    } else if ( mounted.value ) {
+    } else if ( opened.value ) {
 
       onHide?.();
+      opened.value = false;
 
     }
-
-    mounted.value = true;
 
     return () => {};
 
