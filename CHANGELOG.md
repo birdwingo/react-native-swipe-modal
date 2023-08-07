@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 1.0.4 (2023-08-07)
+
+
+### Bug Fixes
+
+* modal style prop ([120a44a](https://github.com/birdwingo/react-native-swipe-modal/commit/120a44a1a4be0fbe28169ffeb793a734ad25cffc))
+
 ### 1.0.3 (2023-08-07)
 
 
