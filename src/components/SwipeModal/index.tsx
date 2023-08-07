@@ -190,7 +190,7 @@ const SwipeModal = forwardRef<SwipeModalPublicMethods, SwipeModalProps>( ( {
   useEffect( () => onHeightChange(), [ maxHeight ] );
 
   const modalChildren = (
-    <View onLayout={onLayout} style={maxHeight !== 'auto' && SwipeModalStyles.flex}>
+    <View onLayout={onLayout} style={[ style, maxHeight !== 'auto' && SwipeModalStyles.flex, { backgroundColor: bg } ]}>
       {showBar && (
         <View style={SwipeModalStyles.barContainer}>
           <View style={[ SwipeModalStyles.bar, { backgroundColor: barColor } ]} />
@@ -217,7 +217,7 @@ const SwipeModal = forwardRef<SwipeModalPublicMethods, SwipeModalProps>( ( {
 
     return (
       <AnimatedModal ref={modalRef} {...props}>
-        <View style={[ style, { backgroundColor: bg } ]}>
+        <View style={maxHeight !== 'auto' && { height: getMaxHeight( maxHeight, topOffset ) }}>
           {modalChildren}
         </View>
       </AnimatedModal>
@@ -227,7 +227,7 @@ const SwipeModal = forwardRef<SwipeModalPublicMethods, SwipeModalProps>( ( {
 
   return (
     <AnimatedModal ref={modalRef} {...props}>
-      <Animated.View style={[ style, !disableSwipe && animatedStyle, { backgroundColor: bg } ]}>
+      <Animated.View style={!disableSwipe && animatedStyle}>
         <GestureDetector gesture={gesture}>{modalChildren}</GestureDetector>
       </Animated.View>
     </AnimatedModal>
