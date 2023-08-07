@@ -191,7 +191,7 @@ const SwipeModal = forwardRef<SwipeModalPublicMethods, SwipeModalProps>( ( {
   }, [ maxHeight ] );
 
   useImperativeHandle( ref, () => ( { show, hide } ), [ maxHeight ] );
-  useAnimatedReaction( () => event.value, onEvent, [ event.value ] );
+  useAnimatedReaction( () => event.value, () => !disableSwipe && onEvent(), [ event.value ] );
   useEffect( () => onHeightChange(), [ maxHeight ] );
 
   const modalChildren = (
