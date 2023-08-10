@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 1.0.8 (2023-08-10)
+
+
+### Bug Fixes
+
+* ios keyboard view ([4131942](https://github.com/birdwingo/react-native-swipe-modal/commit/4131942ced2136e98e28826e82b8a3067bc435bc))
+
 ### 1.0.7 (2023-08-10)
 
 
