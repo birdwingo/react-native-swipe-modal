@@ -54,6 +54,7 @@ const SwipeModal = forwardRef<SwipeModalPublicMethods, SwipeModalProps>( ( {
   footerComponent,
   disableSwipe = false,
   topOffset = 0,
+  containerProps,
   ...props
 }, ref ) => {
 
@@ -190,7 +191,7 @@ const SwipeModal = forwardRef<SwipeModalPublicMethods, SwipeModalProps>( ( {
   useEffect( () => onHeightChange(), [ maxHeight ] );
 
   const modalChildren = (
-    <View onLayout={onLayout} style={[ style, maxHeight !== 'auto' && SwipeModalStyles.flex, { backgroundColor: bg } ]}>
+    <View onLayout={onLayout} {...containerProps} style={[ style, maxHeight !== 'auto' && SwipeModalStyles.flex, { backgroundColor: bg } ]}>
       {showBar && (
         <View style={SwipeModalStyles.barContainer}>
           <View style={[ SwipeModalStyles.bar, { backgroundColor: barColor } ]} />

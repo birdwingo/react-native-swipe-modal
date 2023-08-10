@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { ViewStyle } from 'react-native';
+import { ViewProps, ViewStyle } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { SharedValue } from 'react-native-reanimated';
 import { AnimatedModalProps } from './animatedModalDTO';
@@ -22,6 +22,7 @@ export interface SwipeModalProps extends AnimatedModalProps {
   footerComponent?: ReactNode;
   disableSwipe?: boolean;
   topOffset?: number;
+  containerProps?: ViewProps;
 }
 
 export type SwipeModalPublicMethods = {
