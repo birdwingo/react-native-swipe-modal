@@ -90,6 +90,7 @@ export default YourComponent;
  `animationDuration`     | number                        | 300                     | The duration of the modal's opening and closing animations, in milliseconds.
  `closeSpaceVisibility`  | number (0 - 1)                | 0.6                     | A number representing the opacity of empty space, that will close the modal if `closeOnEmptySpace` is enabled.
  `topOffset`             | number                        | 0                       | Determines the amount of space that the swipeable content will be offset from the top edge of window.
+ `containerProps`        | ViewProps                     |                         | Additional props to be applied to the container.
 
 ## Public Methods
 
