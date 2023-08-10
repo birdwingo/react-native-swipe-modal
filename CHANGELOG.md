@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 1.0.6 (2023-08-10)
+
+
+### Bug Fixes
+
+* containerProps attribute ([a18da78](https://github.com/birdwingo/react-native-swipe-modal/commit/a18da78b333863d851d1b57f8315bc8a85a3bf23))
+
 ### 1.0.5 (2023-08-09)
 
 ### 1.0.4 (2023-08-07)
