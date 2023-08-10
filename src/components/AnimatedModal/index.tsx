@@ -1,5 +1,5 @@
 import {
-  Dimensions, Pressable, BackHandler, KeyboardAvoidingView,
+  Dimensions, Pressable, BackHandler, KeyboardAvoidingView, Platform,
 } from 'react-native';
 import React, {
   forwardRef, memo, useState, useImperativeHandle, useCallback, useEffect,
@@ -105,7 +105,7 @@ const AnimatedModal = forwardRef<AnimatedModalPublicMethods, AnimatedModalProps>
         />
       )}
       <Animated.View style={[ animatedStyle, AnimatedModalStyles.modal ]} pointerEvents="box-none">
-        <KeyboardAvoidingView style={AnimatedModalStyles.flex} pointerEvents="box-none">{children}</KeyboardAvoidingView>
+        <KeyboardAvoidingView style={AnimatedModalStyles.flex} behavior={Platform.OS === 'ios' ? 'height' : undefined} pointerEvents="box-none">{children}</KeyboardAvoidingView>
       </Animated.View>
     </Animated.View>
   );
