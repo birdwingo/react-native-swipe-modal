@@ -16,7 +16,7 @@ import SwipeModalStyles from './SwipeModal.styles';
 
 const HEIGHT = Dimensions.get( 'window' ).height;
 
-const getMaxHeight = ( maxHeight: SwipeModalProps['maxHeight'] = HEIGHT, top = 0 ) => {
+const getMaxHeight = ( maxHeight: NonNullable<SwipeModalProps['maxHeight']>, top: number ) => {
 
   'worklet';
 
@@ -64,7 +64,6 @@ const SwipeModal = forwardRef<SwipeModalPublicMethods, SwipeModalProps>( ( {
   const { gesture, event } = useGesture( scrollRef );
 
   const scrollY = useSharedValue( 0 );
-  const isScrollHandled = useSharedValue( false );
   const maxHeightValue = useSharedValue( getMaxHeight( maxHeight, topOffset ) );
   const height = useSharedValue( defaultHeight || maxHeightValue.value );
   const start = useSharedValue( height.value );
@@ -97,7 +96,7 @@ const SwipeModal = forwardRef<SwipeModalPublicMethods, SwipeModalProps>( ( {
 
     'worklet';
 
-    if ( ( closeTrigger === 'swipeDown' && height.value < start.value - closeTriggerValue )
+    if ( ( closeTrigger === 'swipeDown' && height.value <= start.value - closeTriggerValue )
       || ( closeTrigger === 'minHeight' && height.value < closeTriggerValue )
       || height.value < MIN_HEIGHT ) {
 
@@ -115,7 +114,7 @@ const SwipeModal = forwardRef<SwipeModalPublicMethods, SwipeModalProps>( ( {
 
       }
 
-      if ( start.value === maxHeightValue.value ) {
+      if ( scrollEnabled && start.value === maxHeightValue.value ) {
 
         isScrollEnabled.value = true;
 
@@ -161,16 +160,20 @@ const SwipeModal = forwardRef<SwipeModalPublicMethods, SwipeModalProps>( ( {
 
     'worklet';
 
-    if ( ( !scrollEnabled || !isScrollEnabled.value || !isScrollHandled.value )
+    if ( ( !scrollEnabled || !isScrollEnabled.value || event.value?.velocityY! > 0 )
       && scrollY.value <= 0 ) {
 
+      if ( event.value?.velocityY! > 0 ) {
+
+        isScrollEnabled.value = false;
+
+      }
+
       onGestureEvent();
 
-    } else if ( event.value?.velocityY! > 0 && scrollY.value <= 0 ) {
+    } else if ( !event.value ) {
 
-      isScrollHandled.value = false;
-      isScrollEnabled.value = false;
-      onGestureEvent();
+      onGestureEnd();
 
     }
 
@@ -191,7 +194,7 @@ const SwipeModal = forwardRef<SwipeModalPublicMethods, SwipeModalProps>( ( {
   useEffect( () => onHeightChange(), [ maxHeight ] );
 
   const modalChildren = (
-    <View onLayout={onLayout} {...containerProps} style={[ style, maxHeight !== 'auto' && SwipeModalStyles.flex, { backgroundColor: bg } ]}>
+    <View testID="modalContainer" onLayout={onLayout} {...containerProps} style={[ style, maxHeight !== 'auto' && SwipeModalStyles.flex, { backgroundColor: bg } ]}>
       {showBar && (
         <View style={SwipeModalStyles.barContainer}>
           <View style={[ SwipeModalStyles.bar, { backgroundColor: barColor } ]} />
@@ -205,7 +208,6 @@ const SwipeModal = forwardRef<SwipeModalPublicMethods, SwipeModalProps>( ( {
           props={scrollContainerProps}
           scrollEnabled={isScrollEnabled}
           scrollY={scrollY}
-          isScrollHandled={isScrollHandled}
         >
           {children}
         </ModalScrollView>

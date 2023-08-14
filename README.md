@@ -83,6 +83,7 @@ export default YourComponent;
  `headerComponent`       | ReactNode                     |                         | A custom component to be displayed at the top of the modal. It's placed above scroll content
  `footerComponent`       | ReactNode                     |                         | A custom component to be displayed at the bottom of the modal. It's placed under scroll content
  `disableSwipe`          | boolean                       | false                   | Set to `true` if you don't want allow gesture.
+ `visible`               | boolean                       | false                   | Default value for modal visibility. It can be changed dynamically using public methods.
  `onShow`                | () => void                    |                         | A callback function that will be triggered when the modal is shown.
  `onHide`                | () => void                    |                         | A callback function that will be triggered when the modal is hidden.
  `closeOnEmptySpace`     | boolean                       | true                    | Set to `true` to close the modal when the user taps outside the modal's content.
