@@ -105,7 +105,7 @@ const AnimatedModal = forwardRef<AnimatedModalPublicMethods, AnimatedModalProps>
   }
 
   return (
-    <Animated.View style={AnimatedModalStyles.container} pointerEvents="box-none">
+    <Animated.View style={AnimatedModalStyles.container} pointerEvents="box-none" testID="animatedModal">
       <KeyboardAvoidingView style={AnimatedModalStyles.flex} behavior={Platform.OS === 'ios' ? 'height' : undefined} pointerEvents="box-none">
         {closeOnEmptySpace && (
           <AnimatedPressable

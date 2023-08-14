@@ -224,7 +224,7 @@ const SwipeModal = forwardRef<SwipeModalPublicMethods, SwipeModalProps>( ( {
 
     return (
       <AnimatedModal ref={modalRef} {...props}>
-        <View style={maxHeight !== 'auto' && { height: getMaxHeight( maxHeight, topOffset ) }}>
+        <View style={maxHeight !== 'auto' && { height: getMaxHeight( maxHeight, topOffset ) }} testID="staticModal">
           {modalChildren}
         </View>
       </AnimatedModal>
@@ -234,7 +234,7 @@ const SwipeModal = forwardRef<SwipeModalPublicMethods, SwipeModalProps>( ( {
 
   return (
     <AnimatedModal ref={modalRef} {...props}>
-      <Animated.View style={!disableSwipe && animatedStyle}>
+      <Animated.View style={!disableSwipe && animatedStyle} testID="swipeModal">
         <GestureDetector gesture={gesture}>{modalChildren}</GestureDetector>
       </Animated.View>
     </AnimatedModal>
