@@ -64,6 +64,7 @@ const SwipeModal = forwardRef<SwipeModalPublicMethods, SwipeModalProps>( ( {
   const { gesture, event } = useGesture( scrollRef );
 
   const scrollY = useSharedValue( 0 );
+  const isScrollHandled = useSharedValue( false );
   const maxHeightValue = useSharedValue( getMaxHeight( maxHeight, topOffset ) );
   const height = useSharedValue( defaultHeight || maxHeightValue.value );
   const start = useSharedValue( height.value );
@@ -160,15 +161,15 @@ const SwipeModal = forwardRef<SwipeModalPublicMethods, SwipeModalProps>( ( {
 
     'worklet';
 
-    if ( ( !scrollEnabled || !isScrollEnabled.value || event.value?.velocityY! > 0 )
-      && scrollY.value <= 0 ) {
+    if ( ( !scrollEnabled || !isScrollEnabled.value )
+      && scrollY.value <= 0 && !isScrollHandled.value ) {
 
-      if ( event.value?.velocityY! > 0 ) {
+      onGestureEvent();
 
-        isScrollEnabled.value = false;
+    } else if ( event.value?.velocityY! > 0 && scrollY.value <= 0 ) {
 
-      }
-
+      isScrollHandled.value = false;
+      isScrollEnabled.value = false;
       onGestureEvent();
 
     } else if ( !event.value ) {
@@ -208,6 +209,7 @@ const SwipeModal = forwardRef<SwipeModalPublicMethods, SwipeModalProps>( ( {
           props={scrollContainerProps}
           scrollEnabled={isScrollEnabled}
           scrollY={scrollY}
+          isScrollHandled={isScrollHandled}
         >
           {children}
         </ModalScrollView>

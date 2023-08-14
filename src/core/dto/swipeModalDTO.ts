@@ -36,5 +36,6 @@ export interface ModalScrollContainerProps {
   style?: SwipeModalProps['scrollContainerStyle'];
   props?: SwipeModalProps['scrollContainerProps'];
   scrollY: SharedValue<number>;
+  isScrollHandled: SharedValue<boolean>;
   scrollEnabled: SharedValue<boolean>
 }

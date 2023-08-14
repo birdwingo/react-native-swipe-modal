@@ -317,6 +317,7 @@ describe( 'SwipeModal Tests', () => {
     const scrollView = getByTestId( 'modalScrollView' );
     fireEvent.scroll( scrollView, { nativeEvent: { contentOffset: { y: 100 } } } );
     fireEvent.scroll( scrollView, { nativeEvent: { contentOffset: { y: 0 } } } );
+    fireEvent( scrollView.parent, 'onScrollBeginDrag' );
     fireEvent( scrollView.parent, 'onScrollEndDrag', { nativeEvent: { contentOffset: { y: 0 } } } );
 
   } );
@@ -379,13 +380,13 @@ describe( 'AnimatedModal Tests', () => {
 
   } );
 
-  it( 'Should work on android & should call onShow', async () => {
+  it( 'Should work on android & should call onShow & hideKeyboardOnShow = false', async () => {
 
     Platform.OS = 'android';
     const ref = createRef();
 
     render(
-      <AnimatedModal ref={ref} onShow={() => {}}>
+      <AnimatedModal ref={ref} onShow={() => {}} hideKeyboardOnShow={false}>
         <View />
       </AnimatedModal>,
     );
