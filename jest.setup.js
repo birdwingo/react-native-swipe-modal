@@ -1,5 +1,5 @@
 
-import { BackHandler } from 'react-native';
+import { BackHandler, Dimensions } from 'react-native';
 
 jest.mock('react-native-reanimated', () => {
 
@@ -123,3 +123,5 @@ BackHandler.addEventListener = (_, cb) => {
   return {remove: () => {}}
 
 }
+
+Dimensions.get = () => ({ width: 100, height: 1000 });

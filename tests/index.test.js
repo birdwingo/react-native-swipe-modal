@@ -9,13 +9,14 @@ import * as hooks from '../src/core/hooks';
 jest.spyOn( hooks, 'useGesture' ).mockImplementation( () => ( { gesture: { onEnd: () => {} }, event: { value: { translationY: 0, velocityY: 0 } } } ) );
 jest.spyOn( Reanimated, 'useSharedValue' ).mockImplementation( ( value ) => ( { value } ) );
 
+const sleep = async () => new Promise( ( resolve ) => setTimeout( resolve, 250 ) );
+
 describe( 'SwipeModal Tests', () => {
 
-  it( 'Should show', () => {
+  it( 'Should show', async () => {
 
     const ref = createRef();
-
-    render(
+    const { getByTestId } = render(
       <SwipeModal ref={ref}>
         <View />
       </SwipeModal>,
@@ -27,12 +28,15 @@ describe( 'SwipeModal Tests', () => {
 
     } );
 
+    await sleep();
+
+    expect( getByTestId( 'modalContainer' ) ).toBeTruthy();
+
   } );
 
   it( 'Should work with auto max height', async () => {
 
     const ref = createRef();
-
     const { getByTestId } = render(
       <SwipeModal ref={ref} maxHeight="auto">
         <View />
@@ -45,7 +49,7 @@ describe( 'SwipeModal Tests', () => {
 
     } );
 
-    await new Promise( ( resolve ) => setTimeout( resolve, 200 ) );
+    await sleep();
 
     getByTestId( 'modalContainer' ).props.onLayout( {
       nativeEvent: {
@@ -57,13 +61,25 @@ describe( 'SwipeModal Tests', () => {
 
   } );
 
-  it( 'Should work with max height 500', () => {
+  it( 'Should work with max height 500', async () => {
 
-    render(
-      <SwipeModal maxHeight={500} disableSwipe>
+    const ref = createRef();
+    const { getByTestId } = render(
+      <SwipeModal maxHeight={500} disableSwipe ref={ref}>
         <View />
       </SwipeModal>,
     );
+
+    act( () => {
+
+      ref.current.show();
+
+    } );
+
+
+    await sleep();
+
+    expect( getByTestId( 'staticModal' ) ).toHaveStyle( { height: 500 } );
 
   } );
 
@@ -82,7 +98,7 @@ describe( 'SwipeModal Tests', () => {
 
     } );
 
-    await new Promise( ( resolve ) => setTimeout( resolve, 200 ) );
+    await sleep();
 
     getByTestId( 'modalContainer' ).props.onLayout( {
       nativeEvent: {
@@ -92,13 +108,16 @@ describe( 'SwipeModal Tests', () => {
       },
     } );
 
+    await sleep();
+    
+    expect( getByTestId( 'staticModal' )).not.toHaveStyle( { height: 100 } );
+
   } );
 
   it( 'Should call onEnd', async () => {
 
     jest.spyOn( hooks, 'useGesture' ).mockImplementation( () => ( { gesture: { onEnd: () => {} }, event: { value: undefined } } ) );
     const ref = createRef();
-
     const { getByTestId } = render(
       <SwipeModal ref={ref}>
         <View />
@@ -111,7 +130,7 @@ describe( 'SwipeModal Tests', () => {
 
     } );
 
-    await new Promise( ( resolve ) => setTimeout( resolve, 200 ) );
+    await sleep();
 
     act( () => {
 
@@ -125,7 +144,6 @@ describe( 'SwipeModal Tests', () => {
 
     jest.spyOn( hooks, 'useGesture' ).mockImplementation( () => ( { gesture: { onEnd: () => {} }, event: { value: undefined } } ) );
     const ref = createRef();
-
     const { getByTestId } = render(
       <SwipeModal ref={ref} fixedHeight={false}>
         <View />
@@ -138,7 +156,7 @@ describe( 'SwipeModal Tests', () => {
 
     } );
 
-    await new Promise( ( resolve ) => setTimeout( resolve, 200 ) );
+    await sleep();
 
     act( () => {
 
@@ -152,7 +170,6 @@ describe( 'SwipeModal Tests', () => {
 
     jest.spyOn( hooks, 'useGesture' ).mockImplementation( () => ( { gesture: { onEnd: () => {} }, event: { value: undefined } } ) );
     const ref = createRef();
-
     const { getByTestId } = render(
       <SwipeModal ref={ref} closeTriggerValue={0}>
         <View />
@@ -165,7 +182,7 @@ describe( 'SwipeModal Tests', () => {
 
     } );
 
-    await new Promise( ( resolve ) => setTimeout( resolve, 200 ) );
+    await sleep();
 
     act( () => {
 
@@ -179,7 +196,6 @@ describe( 'SwipeModal Tests', () => {
 
     jest.spyOn( hooks, 'useGesture' ).mockImplementation( () => ( { gesture: { onEnd: () => {} }, event: { value: undefined } } ) );
     const ref = createRef();
-
     const { getByTestId } = render(
       <SwipeModal ref={ref} closeTrigger="minHeight" closeTriggerValue={1500}>
         <View />
@@ -192,7 +208,7 @@ describe( 'SwipeModal Tests', () => {
 
     } );
 
-    await new Promise( ( resolve ) => setTimeout( resolve, 200 ) );
+    await sleep();
 
     act( () => {
 
@@ -206,7 +222,6 @@ describe( 'SwipeModal Tests', () => {
 
     jest.spyOn( hooks, 'useGesture' ).mockImplementation( () => ( { gesture: { onEnd: () => {} }, event: { value: undefined } } ) );
     const ref = createRef();
-
     const { getByTestId } = render(
       <SwipeModal ref={ref} scrollEnabled closeTrigger="minHeight" closeTriggerValue={0}>
         <View />
@@ -219,7 +234,7 @@ describe( 'SwipeModal Tests', () => {
 
     } );
 
-    await new Promise( ( resolve ) => setTimeout( resolve, 200 ) );
+    await sleep();
 
     act( () => {
 
@@ -233,7 +248,6 @@ describe( 'SwipeModal Tests', () => {
 
     jest.spyOn( hooks, 'useGesture' ).mockImplementation( () => ( { gesture: { onEnd: () => {} }, event: { value: { velocityY: 0 } } } ) );
     const ref = createRef();
-
     const { getByTestId } = render(
       <SwipeModal ref={ref} scrollEnabled>
         <View />
@@ -246,7 +260,7 @@ describe( 'SwipeModal Tests', () => {
 
     } );
 
-    await new Promise( ( resolve ) => setTimeout( resolve, 200 ) );
+    await sleep();
 
     act( () => {
 
@@ -260,7 +274,6 @@ describe( 'SwipeModal Tests', () => {
 
     jest.spyOn( hooks, 'useGesture' ).mockImplementation( () => ( { gesture: { onEnd: () => {} }, event: { value: { velocityY: 10 } } } ) );
     jest.spyOn( Reanimated, 'useSharedValue' ).mockImplementation( ( val ) => ( { value: typeof val === 'boolean' ? true : val } ) );
-
     const ref = createRef();
 
     const { getByTestId } = render(
@@ -275,7 +288,7 @@ describe( 'SwipeModal Tests', () => {
 
     } );
 
-    await new Promise( ( resolve ) => setTimeout( resolve, 200 ) );
+    await sleep();
 
     act( () => {
 
@@ -289,8 +302,7 @@ describe( 'SwipeModal Tests', () => {
 
     jest.spyOn( hooks, 'useGesture' ).mockImplementation( () => ( { gesture: { onEnd: () => {} }, event: { value: { translationY: -10, velocityY: 0 } } } ) );
     const ref = createRef();
-
-    render(
+    const { getByTestId } = render(
       <SwipeModal ref={ref}>
         <View />
       </SwipeModal>,
@@ -302,13 +314,16 @@ describe( 'SwipeModal Tests', () => {
 
     } );
 
+    await sleep();
+
+    expect(getByTestId( 'swipeModal' )).toHaveStyle( { height: 1000 } );
+
   } );
 
   it( 'Should work with scroll and velocityY > 0', async () => {
 
     jest.spyOn( hooks, 'useGesture' ).mockImplementation( () => ( { gesture: { onEnd: () => {} }, event: { value: { translationY: 0, velocityY: 10 } } } ) );
     const ref = createRef();
-
     const { getByTestId } = render(
       <SwipeModal ref={ref} scrollEnabled>
         <View />
@@ -330,7 +345,6 @@ describe( 'SwipeModal Tests', () => {
   it( 'Should work with scroll', async () => {
 
     const ref = createRef();
-
     const { getByTestId } = render(
       <SwipeModal ref={ref} scrollEnabled>
         <View />
@@ -343,7 +357,7 @@ describe( 'SwipeModal Tests', () => {
 
     } );
 
-    await new Promise( ( resolve ) => setTimeout( resolve, 200 ) );
+    await sleep();
 
     const scrollView = getByTestId( 'modalScrollView' );
     fireEvent.scroll( scrollView, { nativeEvent: { contentOffset: { y: 100 } } } );
@@ -357,11 +371,10 @@ describe( 'SwipeModal Tests', () => {
 
 describe( 'AnimatedModal Tests', () => {
 
-  it( 'Should show', () => {
+  it( 'Should show and hide', async () => {
 
     const ref = createRef();
-
-    render(
+    const { getByTestId, queryByTestId } = render(
       <AnimatedModal ref={ref}>
         <View />
       </AnimatedModal>,
@@ -373,14 +386,27 @@ describe( 'AnimatedModal Tests', () => {
 
     } );
 
+    await sleep()
+
+    expect(getByTestId( 'animatedModal' )).toBeTruthy();
+
+    act( () => {
+
+      ref.current.hide();
+
+    } );
+
+    await sleep();
+
+    expect(queryByTestId( 'animatedModal' )).toBeFalsy();
+
   } );
 
-  it( 'Should hide', () => {
+  it( 'Should call onHide when changing from visible to hidden', async () => {
 
     const ref = createRef();
-
-    render(
-      <AnimatedModal ref={ref}>
+    const { getByTestId, queryByTestId } = render(
+      <AnimatedModal ref={ref} visible closeOnPressBack={false}>
         <View />
       </AnimatedModal>,
     );
@@ -391,23 +417,9 @@ describe( 'AnimatedModal Tests', () => {
 
     } );
 
-  } );
+    await sleep();
 
-  it( 'Should call onHide when changing from visible to hidden', () => {
-
-    const ref = createRef();
-
-    render(
-      <AnimatedModal ref={ref} visible>
-        <View />
-      </AnimatedModal>,
-    );
-
-    act( () => {
-
-      ref.current.hide();
-
-    } );
+    expect(queryByTestId( 'animatedModal' )).toBeFalsy();
 
   } );
 
@@ -415,8 +427,7 @@ describe( 'AnimatedModal Tests', () => {
 
     Platform.OS = 'android';
     const ref = createRef();
-
-    render(
+    const { getByTestId } = render(
       <AnimatedModal ref={ref} onShow={() => {}} hideKeyboardOnShow={false}>
         <View />
       </AnimatedModal>,
@@ -428,19 +439,9 @@ describe( 'AnimatedModal Tests', () => {
 
     } );
 
-    await new Promise( ( resolve ) => setTimeout( resolve, 200 ) );
+    await sleep();
 
-  } );
-
-  it( 'Should work with closeOnPressBack = false', async () => {
-
-    const ref = createRef();
-
-    render(
-      <AnimatedModal ref={ref} visible closeOnPressBack={false}>
-        <View />
-      </AnimatedModal>,
-    );
+    expect(getByTestId( 'animatedModal' )).toBeTruthy();
 
   } );
 
