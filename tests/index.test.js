@@ -1,11 +1,13 @@
 import React, { createRef } from 'react';
 import { render, act, fireEvent } from '@testing-library/react-native';
 import { View, Platform } from 'react-native';
+import * as Reanimated from 'react-native-reanimated';
 import SwipeModal from '../src';
 import AnimatedModal from '../src/components/AnimatedModal';
 import * as hooks from '../src/core/hooks';
 
 jest.spyOn( hooks, 'useGesture' ).mockImplementation( () => ( { gesture: { onEnd: () => {} }, event: { value: { translationY: 0, velocityY: 0 } } } ) );
+jest.spyOn( Reanimated, 'useSharedValue' ).mockImplementation( ( value ) => ( { value } ) );
 
 describe( 'SwipeModal Tests', () => {
 
@@ -119,13 +121,13 @@ describe( 'SwipeModal Tests', () => {
 
   } );
 
-  it( 'Should call onEnd with fixedHeight', async () => {
+  it( 'Should call onEnd with fixedHeight = false', async () => {
 
     jest.spyOn( hooks, 'useGesture' ).mockImplementation( () => ( { gesture: { onEnd: () => {} }, event: { value: undefined } } ) );
     const ref = createRef();
 
     const { getByTestId } = render(
-      <SwipeModal ref={ref} fixedHeight>
+      <SwipeModal ref={ref} fixedHeight={false}>
         <View />
       </SwipeModal>,
     );
@@ -229,7 +231,36 @@ describe( 'SwipeModal Tests', () => {
 
   it( 'Should not call onGestureEvent', async () => {
 
-    jest.spyOn( hooks, 'useGesture' ).mockImplementation( () => ( { gesture: { onEnd: () => {} }, event: { value: { velocitY: 0 } } } ) );
+    jest.spyOn( hooks, 'useGesture' ).mockImplementation( () => ( { gesture: { onEnd: () => {} }, event: { value: { velocityY: 0 } } } ) );
+    const ref = createRef();
+
+    const { getByTestId } = render(
+      <SwipeModal ref={ref} scrollEnabled>
+        <View />
+      </SwipeModal>,
+    );
+
+    act( () => {
+
+      ref.current.show();
+
+    } );
+
+    await new Promise( ( resolve ) => setTimeout( resolve, 200 ) );
+
+    act( () => {
+
+      fireEvent( getByTestId( 'gestureContainer' ), 'onResponderEnd' );
+
+    } );
+
+  } );
+
+  it( 'Should call onGestureEvent when scrollY === 0', async () => {
+
+    jest.spyOn( hooks, 'useGesture' ).mockImplementation( () => ( { gesture: { onEnd: () => {} }, event: { value: { velocityY: 10 } } } ) );
+    jest.spyOn( Reanimated, 'useSharedValue' ).mockImplementation( ( val ) => ( { value: typeof val === 'boolean' ? true : val } ) );
+
     const ref = createRef();
 
     const { getByTestId } = render(
@@ -259,7 +290,7 @@ describe( 'SwipeModal Tests', () => {
     jest.spyOn( hooks, 'useGesture' ).mockImplementation( () => ( { gesture: { onEnd: () => {} }, event: { value: { translationY: -10, velocityY: 0 } } } ) );
     const ref = createRef();
 
-    const { getByTestId } = render(
+    render(
       <SwipeModal ref={ref}>
         <View />
       </SwipeModal>,

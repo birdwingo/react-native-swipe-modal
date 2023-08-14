@@ -42,7 +42,7 @@ const SwipeModal = forwardRef<SwipeModalPublicMethods, SwipeModalProps>( ( {
   showBar = true,
   barColor = 'grey',
   maxHeight = 'max',
-  fixedHeight = false,
+  fixedHeight = true,
   defaultHeight,
   style,
   closeTrigger = 'swipeDown',
@@ -115,7 +115,7 @@ const SwipeModal = forwardRef<SwipeModalPublicMethods, SwipeModalProps>( ( {
 
       }
 
-      if ( scrollEnabled && start.value === maxHeightValue.value ) {
+      if ( scrollEnabled && height.value === maxHeightValue.value ) {
 
         isScrollEnabled.value = true;
 
@@ -131,27 +131,19 @@ const SwipeModal = forwardRef<SwipeModalPublicMethods, SwipeModalProps>( ( {
 
     'worklet';
 
-    if ( !event.value ) {
+    canResize.value = false;
 
-      onGestureEnd();
+    const { translationY } = event.value!;
+
+    const newHeight = start.value - translationY;
+
+    if ( newHeight <= maxHeightValue.value ) {
+
+      height.value = newHeight;
 
     } else {
 
-      canResize.value = false;
-
-      const { translationY } = event.value;
-
-      const newHeight = start.value - translationY;
-
-      if ( newHeight <= maxHeightValue.value ) {
-
-        height.value = newHeight;
-
-      } else {
-
-        height.value = maxHeightValue.value;
-
-      }
+      height.value = maxHeightValue.value;
 
     }
 
@@ -161,20 +153,30 @@ const SwipeModal = forwardRef<SwipeModalPublicMethods, SwipeModalProps>( ( {
 
     'worklet';
 
-    if ( ( !scrollEnabled || !isScrollEnabled.value )
-      && scrollY.value <= 0 && !isScrollHandled.value ) {
-
-      onGestureEvent();
-
-    } else if ( event.value?.velocityY! > 0 && scrollY.value <= 0 ) {
-
-      isScrollHandled.value = false;
-      isScrollEnabled.value = false;
-      onGestureEvent();
-
-    } else if ( !event.value ) {
+    if ( !event.value ) {
 
       onGestureEnd();
+
+    } else {
+
+      if ( isScrollHandled.value ) {
+
+        if ( event.value.velocityY > 0 && scrollY.value <= 0 ) {
+
+          isScrollEnabled.value = false;
+          isScrollHandled.value = false;
+
+        } else {
+
+          height.value = start.value;
+
+          return;
+
+        }
+
+      }
+
+      onGestureEvent();
 
     }
 
