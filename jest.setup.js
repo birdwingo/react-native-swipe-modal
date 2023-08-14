@@ -1,5 +1,8 @@
 
+import { BackHandler } from 'react-native';
+
 jest.mock('react-native-reanimated', () => {
+
   const View = require('react-native').View;
 
   return {
@@ -10,7 +13,7 @@ jest.mock('react-native-reanimated', () => {
     set: jest.fn(),
     cond: jest.fn(),
     interpolate: jest.fn(),
-    View: View,
+    View: (props) => <View {...props} />,
     createAnimatedComponent: (cb) => cb,
     Extrapolate: { CLAMP: jest.fn() },
     Transition: {
@@ -24,7 +27,7 @@ jest.mock('react-native-reanimated', () => {
     useAnimatedGestureHandler: () => () => {},
     useAnimatedStyle: (cb) => cb(),
     useAnimatedRef: () => ({ current: null }),
-    useAnimatedReaction: () => {},
+    useAnimatedReaction: (value, cb) => cb(value(), ''),
     useAnimatedProps: (cb) => cb(),
     withTiming: (toValue, _, cb) => {
       cb && cb(true);
@@ -44,7 +47,8 @@ jest.mock('react-native-reanimated', () => {
     withSequence: (..._animations) => {
       return 0;
     },
-    withRepeat: (animation) => {
+    withRepeat: (animation, _, __, cb) => {
+      cb();
       return animation;
     },
     cancelAnimation: () => {},
@@ -84,3 +88,38 @@ jest.mock('react-native-reanimated', () => {
     runOnUI: (fn) => fn,
   };
 });
+
+jest.mock('react-native-gesture-handler', () => {
+
+  const View = require('react-native').View;
+  const ScrollView = require('react-native').ScrollView;
+
+  return {
+    GestureDetector: ({gesture, children}) => (
+      <View
+        onResponderStart={gesture.onStart} 
+        onResponderEnd={gesture.onEnd} 
+        onResponderMove={gesture.onUpdate}
+        testID="gestureContainer"
+      >
+        {children}
+      </View>
+    ),
+    ScrollView
+  };
+
+});
+
+jest.mock('./src/core/hooks', () => ({useGesture: jest.fn()}));
+
+BackHandler.addEventListener = (_, cb) => {
+
+  setTimeout(() => {
+    
+    cb();
+    
+  }, 1000);
+
+  return {remove: () => {}}
+
+}
