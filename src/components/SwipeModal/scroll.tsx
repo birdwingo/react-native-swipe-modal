@@ -7,6 +7,7 @@ const AnimatedScrollView = Animated.createAnimatedComponent( ScrollView );
 
 const ModalScrollView: FC<ModalScrollContainerProps> = ( {
   children,
+  isScrollHandled,
   scrollY,
   scrollEnabled,
   scrollRef,
@@ -22,6 +23,11 @@ const ModalScrollView: FC<ModalScrollContainerProps> = ( {
       testID="modalScrollView"
       ref={scrollRef}
       showsVerticalScrollIndicator={false}
+      onScrollBeginDrag={() => {
+
+        isScrollHandled.value = true;
+
+      }}
       onScroll={( e ) => {
 
         if ( e.nativeEvent.contentOffset.y > 0 ) {
@@ -34,6 +40,7 @@ const ModalScrollView: FC<ModalScrollContainerProps> = ( {
       onScrollEndDrag={( e ) => {
 
         scrollY.value = e.nativeEvent.contentOffset.y;
+        isScrollHandled.value = false;
 
       }}
       scrollEventThrottle={1}
