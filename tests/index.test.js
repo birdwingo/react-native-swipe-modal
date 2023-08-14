@@ -405,7 +405,7 @@ describe( 'AnimatedModal Tests', () => {
   it( 'Should call onHide when changing from visible to hidden', async () => {
 
     const ref = createRef();
-    const { getByTestId, queryByTestId } = render(
+    const { queryByTestId } = render(
       <AnimatedModal ref={ref} visible closeOnPressBack={false}>
         <View />
       </AnimatedModal>,
