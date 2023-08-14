@@ -1,5 +1,5 @@
 import {
-  Dimensions, Pressable, BackHandler, KeyboardAvoidingView, Platform,
+  Dimensions, Pressable, BackHandler, KeyboardAvoidingView, Platform, Keyboard,
 } from 'react-native';
 import React, {
   forwardRef, memo, useState, useImperativeHandle, useCallback, useEffect,
@@ -23,6 +23,7 @@ const AnimatedModal = forwardRef<AnimatedModalPublicMethods, AnimatedModalProps>
   closeOnPressBack = true,
   animationDuration = ANIMATION_DURATION,
   closeSpaceVisibility = MAX_VISIBILITY,
+  hideKeyboardOnShow = true,
 }, ref ) => {
 
   const [ isVisible, setIsVisible ] = useState( visible );
@@ -38,6 +39,12 @@ const AnimatedModal = forwardRef<AnimatedModalPublicMethods, AnimatedModalProps>
   ), [] );
 
   const show = useCallback( () => {
+
+    if ( hideKeyboardOnShow ) {
+
+      Keyboard.dismiss();
+
+    }
 
     setIsVisible( true );
 

@@ -9,6 +9,7 @@ export interface AnimatedModalProps {
   closeOnPressBack?: boolean;
   animationDuration?: number;
   closeSpaceVisibility?: number;
+  hideKeyboardOnShow?: boolean;
 }
 
 export type AnimatedModalPublicMethods = {
