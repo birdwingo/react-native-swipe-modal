@@ -1,4 +1,4 @@
-name: Publish Package to npmjs
+name: NPM package publish
 on:
   release:
     types: [created]

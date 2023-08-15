@@ -1,5 +1,10 @@
 # @birdwingo/react-native-swipe-modal
 
+![npm downloads](https://img.shields.io/npm/dm/%40birdwingo/react-native-swipe-modal)
+![npm version](https://img.shields.io/npm/v/%40birdwingo/react-native-swipe-modal)
+![github release](https://github.com/birdwingo/react-native-swipe-modal/actions/workflows/release.yml/badge.svg?event=pull_request)
+![npm release](https://github.com/birdwingo/react-native-swipe-modal/actions/workflows/public.yml/badge.svg?event=release)
+
 ## Features 🌟
 
 🕶️ Swipe-to-Close Functionality: Easily close modals with a single swipe gesture, providing an intuitive user experience.
@@ -103,5 +108,5 @@ Name                  | Description
 
 ## Sponsor
 
-**react-native-reanimated-graph** is sponsored by [Birdwingo](https://www.birdwingo.com).\
-Download Birdwingo mobile app to see react-native-reanimated-graph in action!
+**react-native-swipe-modal** is sponsored by [Birdwingo](https://www.birdwingo.com).\
+Download Birdwingo mobile app to see react-native-swipe-modal in action!
