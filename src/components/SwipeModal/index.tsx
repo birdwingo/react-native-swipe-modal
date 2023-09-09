@@ -121,9 +121,9 @@ const SwipeModal = forwardRef<SwipeModalPublicMethods, SwipeModalProps>( ( {
 
       }
 
-    }
+      canResize.value = true;
 
-    canResize.value = true;
+    }
 
   };
 
