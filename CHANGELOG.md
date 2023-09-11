@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 1.0.11 (2023-09-11)
+
+
+### Bug Fixes
+
+* jumping modal while closing ([3f218f3](https://github.com/birdwingo/react-native-swipe-modal/commit/3f218f3b7a67d6401a0afdc9a1bcf59634e0eeb7))
+
 ### 1.0.10 (2023-08-16)
 
 ### 1.0.9 (2023-08-15)
