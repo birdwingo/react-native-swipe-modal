@@ -24,4 +24,8 @@ export default StyleSheet.create( {
   flex: {
     flex: 1,
   },
+  rootView: {
+    flex: 1,
+    justifyContent: 'flex-end',
+  },
 } );

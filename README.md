@@ -98,6 +98,7 @@ export default YourComponent;
  `topOffset`             | number                        | 0                       | Determines the amount of space that the swipeable content will be offset from the top edge of window.
  `containerProps`        | ViewProps                     |                         | Additional props to be applied to the container.
  `hideKeyboardOnShow`    | boolean                       | true                    | Set to `true` if you want to hide keyboard on show modal if was opened.
+ `wrapInGestureHandlerRootView`| boolean                 | false                   | Set to `true` if you want to wrap content in to GestureHandlerRootView (required if you want to use modal inside react-native Modal component).
 
 ## Public Methods
 
