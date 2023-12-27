@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## 1.1.0 (2023-12-27)
+
+
+### Features
+
+* wrapInGestureHandlerRootView prop ([046ce4b](https://github.com/birdwingo/react-native-swipe-modal/commit/046ce4b5912c11a0c077b294d13a5e347c624467))
+
 ### 1.0.11 (2023-09-11)
 
 
