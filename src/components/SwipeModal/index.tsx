@@ -5,7 +5,7 @@ import { View, Dimensions, LayoutChangeEvent } from 'react-native';
 import Animated, {
   useSharedValue, useAnimatedStyle, useAnimatedReaction, runOnJS, withTiming,
 } from 'react-native-reanimated';
-import { GestureDetector, ScrollView } from 'react-native-gesture-handler';
+import { GestureDetector, GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler';
 import AnimatedModal from '../AnimatedModal';
 import ModalScrollView from './scroll';
 import { SwipeModalProps, SwipeModalPublicMethods } from '../../core/dto/swipeModalDTO';
@@ -55,6 +55,7 @@ const SwipeModal = forwardRef<SwipeModalPublicMethods, SwipeModalProps>( ( {
   disableSwipe = false,
   topOffset = 0,
   containerProps,
+  wrapInGestureHandlerRootView,
   ...props
 }, ref ) => {
 
@@ -232,11 +233,19 @@ const SwipeModal = forwardRef<SwipeModalPublicMethods, SwipeModalProps>( ( {
 
   }
 
+  const content = (
+    <Animated.View style={!disableSwipe && animatedStyle} testID="swipeModal">
+      <GestureDetector gesture={gesture}>{modalChildren}</GestureDetector>
+    </Animated.View>
+  );
+
   return (
     <AnimatedModal ref={modalRef} {...props}>
-      <Animated.View style={!disableSwipe && animatedStyle} testID="swipeModal">
-        <GestureDetector gesture={gesture}>{modalChildren}</GestureDetector>
-      </Animated.View>
+      {wrapInGestureHandlerRootView ? (
+        <GestureHandlerRootView style={SwipeModalStyles.rootView}>
+          {content}
+        </GestureHandlerRootView>
+      ) : content}
     </AnimatedModal>
   );
 

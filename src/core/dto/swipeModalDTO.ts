@@ -23,6 +23,7 @@ export interface SwipeModalProps extends AnimatedModalProps {
   disableSwipe?: boolean;
   topOffset?: number;
   containerProps?: ViewProps;
+  wrapInGestureHandlerRootView?: boolean;
 }
 
 export type SwipeModalPublicMethods = {
