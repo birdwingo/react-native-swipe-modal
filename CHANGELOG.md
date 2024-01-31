@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 1.1.2 (2024-01-31)
+
+
+### Bug Fixes
+
+* commit lint ([ec5ccfb](https://github.com/birdwingo/react-native-swipe-modal/commit/ec5ccfb1544bd6cb409bdd191363a734d8f63b50))
+
 ### 1.1.1 (2023-12-27)
 
 ## 1.1.0 (2023-12-27)
