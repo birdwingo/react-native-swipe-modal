@@ -9,6 +9,7 @@ export interface SwipeModalProps extends AnimatedModalProps {
   bg?: string;
   showBar?: boolean;
   barColor?: string;
+  barContainerStyle?: ViewStyle | ViewStyle[];
   maxHeight?: 'max' | 'auto' | number;
   defaultHeight?: number;
   fixedHeight?: boolean;

@@ -41,6 +41,7 @@ const SwipeModal = forwardRef<SwipeModalPublicMethods, SwipeModalProps>( ( {
   bg = 'black',
   showBar = true,
   barColor = 'grey',
+  barContainerStyle,
   maxHeight = 'max',
   fixedHeight = true,
   defaultHeight,
@@ -200,7 +201,7 @@ const SwipeModal = forwardRef<SwipeModalPublicMethods, SwipeModalProps>( ( {
   const modalChildren = (
     <View testID="modalContainer" onLayout={onLayout} {...containerProps} style={[ style, maxHeight !== 'auto' && SwipeModalStyles.flex, { backgroundColor: bg } ]}>
       {showBar && (
-        <View style={SwipeModalStyles.barContainer}>
+        <View style={[ SwipeModalStyles.barContainer, barContainerStyle ]}>
           <View style={[ SwipeModalStyles.bar, { backgroundColor: barColor } ]} />
         </View>
       )}
