@@ -76,6 +76,7 @@ export default YourComponent;
  `bg`                    | string                        | 'black'                 | The background color of the modal.
  `showBar`               | boolean                       | true                    | Set to `true` to display a bar at the top of the modal.
  `barColor`              | string                        | 'grey'                  | The color of the bar at the top of the modal.
+ `barContainerStyle`     | ViewStyle\|ViewStyle[]        |                         | Additional styles applied to bar container view.
  `maxHeight`             | 'max'\|'auto'\|number         | 'max'                   | The maximum height of the modal. If `'auto'` maxHeight of modal will the height modal children need.
  `defaultHeight`         | number                        | `maxHeight`             | The default height of the modal.
  `fixedHeight`           | boolean                       | false                   | Set to `true` if you want to maintain a fixed height for the modal. It means that the height of the modal will get back to the initial position after swipe, if modal was not closed .
