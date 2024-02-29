@@ -10,6 +10,7 @@ export interface AnimatedModalProps {
   animationDuration?: number;
   closeSpaceVisibility?: number;
   hideKeyboardOnShow?: boolean;
+  useKeyboardAvoidingView?: boolean;
 }
 
 export type AnimatedModalPublicMethods = {
