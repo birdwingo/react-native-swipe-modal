@@ -100,6 +100,7 @@ export default YourComponent;
  `containerProps`        | ViewProps                     |                         | Additional props to be applied to the container.
  `hideKeyboardOnShow`    | boolean                       | true                    | Set to `true` if you want to hide keyboard on show modal if was opened.
  `wrapInGestureHandlerRootView`| boolean                 | false                   | Set to `true` if you want to wrap content in to GestureHandlerRootView (required if you want to use modal inside react-native Modal component).
+ `useKeyboardAvoidingView`| boolean                      | true                    | Set to `false` if you want to show keyboard over the modal content.
 
 ## Public Methods
 
