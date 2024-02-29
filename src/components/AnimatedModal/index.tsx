@@ -24,6 +24,7 @@ const AnimatedModal = forwardRef<AnimatedModalPublicMethods, AnimatedModalProps>
   animationDuration = ANIMATION_DURATION,
   closeSpaceVisibility = MAX_VISIBILITY,
   hideKeyboardOnShow = true,
+  useKeyboardAvoidingView = true,
 }, ref ) => {
 
   const [ isVisible, setIsVisible ] = useState( visible );
@@ -104,17 +105,25 @@ const AnimatedModal = forwardRef<AnimatedModalPublicMethods, AnimatedModalProps>
 
   }
 
+  const content = (
+    <>
+      {closeOnEmptySpace && (
+      <AnimatedPressable
+        onPress={hide}
+        style={[ AnimatedModalStyles.pressable, animatedPressableStyle ]}
+      />
+      )}
+      <Animated.View style={[ animatedStyle, AnimatedModalStyles.modal ]} pointerEvents="box-none">{children}</Animated.View>
+    </>
+  );
+
   return (
     <Animated.View style={AnimatedModalStyles.container} pointerEvents="box-none" testID="animatedModal">
-      <KeyboardAvoidingView style={AnimatedModalStyles.flex} behavior={Platform.OS === 'ios' ? 'height' : undefined} pointerEvents="box-none">
-        {closeOnEmptySpace && (
-          <AnimatedPressable
-            onPress={hide}
-            style={[ AnimatedModalStyles.pressable, animatedPressableStyle ]}
-          />
-        )}
-        <Animated.View style={[ animatedStyle, AnimatedModalStyles.modal ]} pointerEvents="box-none">{children}</Animated.View>
-      </KeyboardAvoidingView>
+      {useKeyboardAvoidingView ? (
+        <KeyboardAvoidingView style={AnimatedModalStyles.flex} behavior={Platform.OS === 'ios' ? 'height' : undefined} pointerEvents="box-none">
+          {content}
+        </KeyboardAvoidingView>
+      ) : content}
     </Animated.View>
   );
 
