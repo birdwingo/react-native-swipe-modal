@@ -1,10 +1,10 @@
-import { ReactNode } from 'react';
+import { ReactNode, RefObject } from 'react';
 import { ViewProps, ViewStyle } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { SharedValue } from 'react-native-reanimated';
 import { AnimatedModalProps } from './animatedModalDTO';
 
-export interface SwipeModalProps extends AnimatedModalProps {
+export type SwipeModalProps = AnimatedModalProps & {
   children: ReactNode | ReactNode[];
   bg?: string;
   showBar?: boolean;
@@ -25,7 +25,7 @@ export interface SwipeModalProps extends AnimatedModalProps {
   topOffset?: number;
   containerProps?: ViewProps;
   wrapInGestureHandlerRootView?: boolean;
-}
+};
 
 export type SwipeModalPublicMethods = {
   show: () => void;
@@ -34,7 +34,7 @@ export type SwipeModalPublicMethods = {
 
 export interface ModalScrollContainerProps {
   children: ReactNode;
-  scrollRef: React.RefObject<ScrollView>;
+  scrollRef: RefObject<ScrollView>;
   style?: SwipeModalProps['scrollContainerStyle'];
   props?: SwipeModalProps['scrollContainerProps'];
   scrollY: SharedValue<number>;

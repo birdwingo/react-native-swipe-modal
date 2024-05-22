@@ -1,11 +1,26 @@
 import {
-  Dimensions, Pressable, BackHandler, KeyboardAvoidingView, Platform, Keyboard,
+  BackHandler,
+  Dimensions,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
 } from 'react-native';
 import React, {
-  forwardRef, memo, useState, useImperativeHandle, useCallback, useEffect,
+  forwardRef,
+  memo,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+  useState,
 } from 'react';
 import Animated, {
-  useSharedValue, useAnimatedStyle, withTiming, runOnJS, interpolate,
+  interpolate,
+  runOnJS,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
 } from 'react-native-reanimated';
 import AnimatedModalStyles from './AnimatedModal.styles';
 import { AnimatedModalProps, AnimatedModalPublicMethods } from '../../core/dto/animatedModalDTO';
@@ -14,30 +29,52 @@ import { ANIMATION_DURATION, MAX_VISIBILITY } from '../../core/constants/data';
 const AnimatedPressable = Animated.createAnimatedComponent( Pressable );
 const HEIGHT = Dimensions.get( 'window' ).height;
 
-const AnimatedModal = forwardRef<AnimatedModalPublicMethods, AnimatedModalProps>( ( {
-  children,
-  visible = false,
-  onShow,
-  onHide,
-  closeOnEmptySpace = true,
-  closeOnPressBack = true,
-  animationDuration = ANIMATION_DURATION,
-  closeSpaceVisibility = MAX_VISIBILITY,
-  hideKeyboardOnShow = true,
-  useKeyboardAvoidingView = true,
-}, ref ) => {
+// eslint-disable-next-line max-len
+const AnimatedModal = forwardRef<AnimatedModalPublicMethods, AnimatedModalProps>( ( props, ref ) => {
 
-  const [ isVisible, setIsVisible ] = useState( visible );
+  const {
+    children,
+    onShow,
+    onHide,
+    closeOnEmptySpace = true,
+    closeOnPressBack = true,
+    animationDuration = ANIMATION_DURATION,
+    closeSpaceVisibility = MAX_VISIBILITY,
+    hideKeyboardOnShow = true,
+    useKeyboardAvoidingView = true,
+  } = props;
 
-  const animation = useSharedValue( visible ? 1 : 0 );
-  const opened = useSharedValue( visible );
+  // default visibility should never change, hence useMemo with empty dependency array
+  // eslint-disable-next-line max-len
+  const defaultVisibility: boolean = useMemo( () => ( props.controlled ? props.open : ( props.visible ?? false ) ), [] );
 
-  const animatedPressableStyle = useAnimatedStyle( () => (
-    { opacity: interpolate( animation.value, [ 0, 1 ], [ 0, closeSpaceVisibility ] ) }
-  ), [] );
-  const animatedStyle = useAnimatedStyle( () => (
-    { top: interpolate( animation.value, [ 0, 1 ], [ HEIGHT, 0 ] ) }
-  ), [] );
+  const [ isVisible, setIsVisible ] = useState( defaultVisibility );
+  const animation = useSharedValue( defaultVisibility ? 1 : 0 );
+  const opened = useSharedValue( defaultVisibility );
+
+  // handle top-down controlled state
+  useEffect( () => {
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    props.controlled && setIsVisible( props.open );
+
+  }, [ props.controlled, props.open ] );
+
+  // handle bottom-up controlled state
+  useEffect( () => {
+
+    if ( props.controlled && isVisible !== props.open ) {
+
+      props.setOpen( isVisible );
+
+    }
+
+  }, [ isVisible ] );
+
+  // eslint-disable-next-line max-len
+  const animatedPressableStyle = useAnimatedStyle( () => ( { opacity: interpolate( animation.value, [ 0, 1 ], [ 0, closeSpaceVisibility ] ) } ), [] );
+  // eslint-disable-next-line max-len
+  const animatedStyle = useAnimatedStyle( () => ( { top: interpolate( animation.value, [ 0, 1 ], [ HEIGHT, 0 ] ) } ), [] );
 
   const show = useCallback( () => {
 
@@ -61,7 +98,10 @@ const AnimatedModal = forwardRef<AnimatedModalPublicMethods, AnimatedModalProps>
 
   }, [] );
 
-  useImperativeHandle( ref, () => ( { show, hide } ), [] );
+  useImperativeHandle( ref, () => ( {
+    show,
+    hide,
+  } ), [] );
 
   useEffect( () => {
 
@@ -108,19 +148,32 @@ const AnimatedModal = forwardRef<AnimatedModalPublicMethods, AnimatedModalProps>
   const content = (
     <>
       {closeOnEmptySpace && (
-      <AnimatedPressable
-        onPress={hide}
-        style={[ AnimatedModalStyles.pressable, animatedPressableStyle ]}
-      />
+        <AnimatedPressable
+          onPress={hide}
+          style={[ AnimatedModalStyles.pressable, animatedPressableStyle ]}
+        />
       )}
-      <Animated.View style={[ animatedStyle, AnimatedModalStyles.modal ]} pointerEvents="box-none">{children}</Animated.View>
+      <Animated.View
+        style={[ animatedStyle, AnimatedModalStyles.modal ]}
+        pointerEvents="box-none"
+      >
+        { children }
+      </Animated.View>
     </>
   );
 
   return (
-    <Animated.View style={AnimatedModalStyles.container} pointerEvents="box-none" testID="animatedModal">
+    <Animated.View
+      style={AnimatedModalStyles.container}
+      pointerEvents="box-none"
+      testID="animatedModal"
+    >
       {useKeyboardAvoidingView ? (
-        <KeyboardAvoidingView style={AnimatedModalStyles.flex} behavior={Platform.OS === 'ios' ? 'height' : undefined} pointerEvents="box-none">
+        <KeyboardAvoidingView
+          style={AnimatedModalStyles.flex}
+          behavior={Platform.OS === 'ios' ? 'height' : undefined}
+          pointerEvents="box-none"
+        >
           {content}
         </KeyboardAvoidingView>
       ) : content}
