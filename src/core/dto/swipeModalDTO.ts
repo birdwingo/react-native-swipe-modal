@@ -5,7 +5,6 @@ import { SharedValue } from 'react-native-reanimated';
 import { AnimatedModalProps } from './animatedModalDTO';
 
 export type SwipeModalProps = AnimatedModalProps & {
-  children: ReactNode | ReactNode[];
   bg?: string;
   showBar?: boolean;
   barColor?: string;
