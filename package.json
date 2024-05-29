@@ -1,6 +1,6 @@
 {
   "name": "@birdwingo/react-native-swipe-modal",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "A versatile and smooth swipeable modal component for React Native applications.",
   "main": "src/index.tsx",
   "source": "src/index.tsx",
