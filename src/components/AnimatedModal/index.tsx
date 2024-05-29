@@ -46,7 +46,8 @@ const AnimatedModal = forwardRef<AnimatedModalPublicMethods, AnimatedModalProps>
 
   // default visibility should never change, hence useMemo with empty dependency array
   // eslint-disable-next-line max-len
-  const defaultVisibility: boolean = useMemo( () => ( props.controlled ? props.open : ( props.visible ?? false ) ), [] );
+  const defaultVisibility: boolean = useMemo( () => ( 'open' in props && typeof props.open === 'boolean' ? props.open : ( props.visible ?? false ) ), [] );
+  const controlledVisibility: boolean | undefined = useMemo( () => props.open, [ props.open ] );
 
   const [ isVisible, setIsVisible ] = useState( defaultVisibility );
   const animation = useSharedValue( defaultVisibility ? 1 : 0 );
@@ -56,20 +57,24 @@ const AnimatedModal = forwardRef<AnimatedModalPublicMethods, AnimatedModalProps>
   useEffect( () => {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    props.controlled && setIsVisible( props.open );
+    typeof controlledVisibility === 'boolean' && setIsVisible( controlledVisibility );
 
-  }, [ props.controlled, props.open ] );
+  }, [ controlledVisibility ] );
 
   // handle bottom-up controlled state
   useEffect( () => {
 
-    if ( props.controlled && isVisible !== props.open ) {
+    if ( typeof controlledVisibility === 'boolean' && isVisible !== controlledVisibility ) {
 
-      props.setOpen( isVisible );
+      if ( typeof props.setOpen === 'function' ) {
+
+        props.setOpen( isVisible );
+
+      }
 
     }
 
-  }, [ isVisible ] );
+  }, [ isVisible, controlledVisibility ] );
 
   // eslint-disable-next-line max-len
   const animatedPressableStyle = useAnimatedStyle( () => ( { opacity: interpolate( animation.value, [ 0, 1 ], [ 0, closeSpaceVisibility ] ) } ), [] );
