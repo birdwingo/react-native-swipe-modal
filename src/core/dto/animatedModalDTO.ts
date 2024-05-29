@@ -1,7 +1,6 @@
 import { ReactNode } from 'react';
 
 export type AnimatedModalBaseProps = {
-  controlled?: boolean;
   open?: boolean;
   setOpen?: ( value: boolean ) => void;
   visible?: boolean;
@@ -18,14 +17,12 @@ export type AnimatedModalBaseProps = {
 
 export type ControlledAnimatedModalProps = AnimatedModalBaseProps & {
   visible?: never;
-  controlled: true;
   open: boolean;
   setOpen: ( value: boolean ) => void;
 };
 
 export type ForwardRefAnimatedModalProps = AnimatedModalBaseProps & {
   visible?: boolean;
-  controlled?: never;
   open?: never;
   setOpen?: never;
 };
