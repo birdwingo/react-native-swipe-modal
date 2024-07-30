@@ -20,6 +20,7 @@ const ModalScrollView: FC<ModalScrollContainerProps> = ( {
   return (
     <AnimatedScrollView
       {...props}
+      hitSlop={undefined}
       testID="modalScrollView"
       ref={scrollRef}
       showsVerticalScrollIndicator={false}
