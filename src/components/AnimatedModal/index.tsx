@@ -29,8 +29,10 @@ import { ANIMATION_DURATION, MAX_VISIBILITY } from '../../core/constants/data';
 const AnimatedPressable = Animated.createAnimatedComponent( Pressable );
 const HEIGHT = Dimensions.get( 'window' ).height;
 
-// eslint-disable-next-line max-len
-const AnimatedModal = forwardRef<AnimatedModalPublicMethods, AnimatedModalProps>( ( props, ref ) => {
+const AnimatedModal = forwardRef<AnimatedModalPublicMethods, AnimatedModalProps>( (
+  props,
+  ref,
+) => {
 
   const {
     children,
@@ -46,7 +48,6 @@ const AnimatedModal = forwardRef<AnimatedModalPublicMethods, AnimatedModalProps>
   } = props;
 
   // default visibility should never change, hence useMemo with empty dependency array
-  // eslint-disable-next-line max-len
   const defaultVisibility: boolean = useMemo( () => ( 'open' in props && typeof props.open === 'boolean' ? props.open : ( props.visible ?? false ) ), [] );
   const controlledVisibility: boolean | undefined = useMemo( () => props.open, [ props.open ] );
 
@@ -57,8 +58,11 @@ const AnimatedModal = forwardRef<AnimatedModalPublicMethods, AnimatedModalProps>
   // handle top-down controlled state
   useEffect( () => {
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    typeof controlledVisibility === 'boolean' && setIsVisible( controlledVisibility );
+    if ( typeof controlledVisibility === 'boolean' ) {
+
+      setIsVisible( controlledVisibility );
+
+    }
 
   }, [ controlledVisibility ] );
 
@@ -77,10 +81,14 @@ const AnimatedModal = forwardRef<AnimatedModalPublicMethods, AnimatedModalProps>
 
   }, [ isVisible, controlledVisibility ] );
 
-  // eslint-disable-next-line max-len
-  const animatedPressableStyle = useAnimatedStyle( () => ( { opacity: interpolate( animation.value, [ 0, 1 ], [ 0, closeSpaceVisibility ] ) } ), [] );
-  // eslint-disable-next-line max-len
-  const animatedStyle = useAnimatedStyle( () => ( { top: interpolate( animation.value, [ 0, 1 ], [ HEIGHT, 0 ] ) } ), [] );
+  const animatedPressableStyle = useAnimatedStyle(
+    () => ( { opacity: interpolate( animation.value, [ 0, 1 ], [ 0, closeSpaceVisibility ] ) } ),
+    [],
+  );
+  const animatedStyle = useAnimatedStyle(
+    () => ( { top: interpolate( animation.value, [ 0, 1 ], [ HEIGHT, 0 ] ) } ),
+    [],
+  );
 
   const show = useCallback( () => {
 
