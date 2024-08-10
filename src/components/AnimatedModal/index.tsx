@@ -42,6 +42,7 @@ const AnimatedModal = forwardRef<AnimatedModalPublicMethods, AnimatedModalProps>
     closeSpaceVisibility = MAX_VISIBILITY,
     hideKeyboardOnShow = true,
     useKeyboardAvoidingView = true,
+    keyboardAvoidingViewBehavior,
   } = props;
 
   // default visibility should never change, hence useMemo with empty dependency array
@@ -176,7 +177,7 @@ const AnimatedModal = forwardRef<AnimatedModalPublicMethods, AnimatedModalProps>
       {useKeyboardAvoidingView ? (
         <KeyboardAvoidingView
           style={AnimatedModalStyles.flex}
-          behavior={Platform.OS === 'ios' ? 'height' : undefined}
+          behavior={keyboardAvoidingViewBehavior ?? ( Platform.OS === 'ios' ? 'height' : undefined )}
           pointerEvents="box-none"
         >
           {content}

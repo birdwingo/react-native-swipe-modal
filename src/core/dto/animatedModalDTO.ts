@@ -13,6 +13,7 @@ export type AnimatedModalBaseProps = {
   closeSpaceVisibility?: number;
   hideKeyboardOnShow?: boolean;
   useKeyboardAvoidingView?: boolean;
+  keyboardAvoidingViewBehavior?: 'height' | 'position' | 'padding';
 };
 
 export type ControlledAnimatedModalProps = AnimatedModalBaseProps & {
