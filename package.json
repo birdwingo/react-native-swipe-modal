@@ -5,6 +5,7 @@
   "main": "src/index.tsx",
   "source": "src/index.tsx",
   "scripts": {
+    "lint": "eslint --fix",
     "prepare": "husky install",
     "build": "tsc -p tsconfig.json",
     "release": "standard-version",
