@@ -184,9 +184,12 @@ const AnimatedModal = forwardRef<AnimatedModalPublicMethods, AnimatedModalProps>
     >
       {useKeyboardAvoidingView ? (
         <KeyboardAvoidingView
-          style={AnimatedModalStyles.flex}
-          behavior={keyboardAvoidingViewBehavior ?? ( Platform.OS === 'ios' ? 'height' : undefined )}
-          pointerEvents="box-none"
+          style={{
+            ...AnimatedModalStyles.flex,
+            ...props.keyboardAvoidingViewProps
+          }}
+          behavior={keyboardAvoidingViewBehavior ?? props.keyboardAvoidingViewProps?.behavior ?? ( Platform.OS === 'ios' ? 'height' : undefined )}
+          pointerEvents={props.keyboardAvoidingViewProps?.pointerEvents ?? "box-none"}
         >
           {content}
         </KeyboardAvoidingView>
