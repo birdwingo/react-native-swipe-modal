@@ -1,4 +1,6 @@
 import { ReactNode } from 'react';
+import { KeyboardAvoidingViewProps } from 'react-native';
+
 
 export type AnimatedModalBaseProps = {
   open?: boolean;
@@ -13,7 +15,8 @@ export type AnimatedModalBaseProps = {
   closeSpaceVisibility?: number;
   hideKeyboardOnShow?: boolean;
   useKeyboardAvoidingView?: boolean;
-  keyboardAvoidingViewBehavior?: 'height' | 'position' | 'padding';
+  keyboardAvoidingViewBehavior?: KeyboardAvoidingViewProps['behavior'];
+  keyboardAvoidingViewProps?: KeyboardAvoidingViewProps;
 };
 
 export type ControlledAnimatedModalProps = AnimatedModalBaseProps & {

@@ -102,6 +102,7 @@ export default YourComponent;
  `wrapInGestureHandlerRootView`| boolean                 | false                   | Set to `true` if you want to wrap content in to GestureHandlerRootView (required if you want to use modal inside react-native Modal component).
  `useKeyboardAvoidingView`| boolean                      | true                    | Set to `false` if you want to show keyboard over the modal content.
  `keyboardAvoidingViewBehavior`| 'height' | 'position' | 'padding'| Platform.OS === 'ios' ? 'height' : undefined| Behavior property for keyboardAvoidingView
+ `keyboardAvoidingViewProps` | KeyboardAvoidingViewProps | | Additional props to be applied to the KeyboardAvoidingView.
 
 ## Public Methods
 
