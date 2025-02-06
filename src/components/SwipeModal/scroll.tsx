@@ -31,7 +31,7 @@ const ModalScrollView: FC<ModalScrollContainerProps> = ( {
       }}
       onScroll={( e ) => {
 
-        if ( e.nativeEvent.contentOffset.y > 0 ) {
+        if ( e.nativeEvent.contentOffset.y >= 0 ) {
 
           scrollY.value = e.nativeEvent.contentOffset.y;
 
